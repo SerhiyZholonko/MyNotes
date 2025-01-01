@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 import SwiftUI
 import SwiftData
 import PhotosUI
@@ -18,25 +17,26 @@ struct AddNoteListView: View {
     @StateObject private var viewModel = AddNoteListViewModel()
     @State private var selectedCoverData: [Data] = []
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
-    
+    @Binding var isAddViewPresented: Bool
+
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     var fetchNote: (() -> Void)
-    
-//    private var tags: [TagModel] = []
+    @State var showPhotoPicker: Bool = false
     @Binding var tags: [TagModel]  // Use a Binding
 
     
     
-    init(tags: Binding<[TagModel]>, fetchNote: @escaping (() -> Void)) {
+    init(tags: Binding<[TagModel]>, isAddViewPresented: Binding<Bool>, fetchNote: @escaping (() -> Void)) {
         self._tags = tags
+        self._isAddViewPresented = isAddViewPresented
         self.fetchNote = fetchNote // Initialize fetchNote first
     }
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading) {
+                VStack(alignment: .center) {
                     
                     VStack {
                         HStack {
@@ -63,18 +63,7 @@ struct AddNoteListView: View {
                         .padding(.trailing)
                         ResizableTextEditor(text: $viewModel.noteText, placeholder: "Note")
                     }
-                    TagsListView(selectedTags: $viewModel.selectedTags)
-                    HStack {
-                        PhotosPicker(
-                            selection: $viewModel.selectedCover,
-                            matching: .images,
-                            photoLibrary: .shared()
-                        ) {
-                            Label("Add Images", systemImage: "photo.on.rectangle.angled")
-                        }
-                        .padding(.vertical)
-                        Spacer()
-                    }
+
                                 ScrollView(.horizontal) {
                                     HStack {
                                         ForEach(viewModel.selectedCoverDataList, id: \.self) { data in
@@ -124,19 +113,28 @@ struct AddNoteListView: View {
                                         }
                                     }
                                 }
-                    Button {
-                        viewModel.saveNote(in: context) {
-                            fetchNote()
-                            
-                            dismiss()
+                    HStack( spacing: 8) {
+                        
+                        ForEach(Array(viewModel.selectedTags), id: \.id) { tag in
+                            Text("#\(tag.name)")
                         }
-                    } label: {
-                        Text("Save")
+                        Spacer()
                     }
-                    .buttonStyle(.bordered)
                     Spacer()
+                        
+                    
                 }
                 .padding()
+            }
+            VStack {
+                TextEditView(showPhotoPicker: $showPhotoPicker)
+                    .environmentObject(viewModel)
+                    .photosPicker(
+                        isPresented: $showPhotoPicker,
+                             selection: $viewModel.selectedCover,
+                             matching: .images,
+                             photoLibrary: .shared()
+                         )
             }
             .task(id: viewModel.selectedCover) {
                 for item in viewModel.selectedCover {
@@ -145,21 +143,18 @@ struct AddNoteListView: View {
                     }
                 }
             }
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        dismiss()
+                        viewModel.saveNote(in: context) {
+                            fetchNote()
+                            dismiss()
+                        }
                     }) {
-                        Image(systemName: "xmark")
+                        Text("Save")
                     }
                 }
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    Button(action: {
-//                        viewModel.actionSheetPresentation = .showAlert // Show alert sheet
-//                    }) {
-//                        Text("Add tag")
-//                    }
-//                }
             }
             .sheet(item: $viewModel.actionSheetPresentation) { item in
                 // Switch to handle different views
@@ -195,9 +190,26 @@ struct AddNoteListView: View {
                         .padding()
                     }
                     .presentationDetents([.fraction(0.3), .medium, .large])
+                case .showTags:
+                    AddTagsView(selectedTags: $viewModel.selectedTags)
+
+                        .presentationDetents([.fraction(0.5), .medium, .large])
+
+                        
+                case .showTextEditor:
+                    Text("showTextEditor")
+                        .presentationDetents([.fraction(0.5), .medium, .large])
+
                 }
             }
+           
+            .onAppear {
+                isAddViewPresented = false
+            }
+            
         }
+        .toolbar(.hidden, for: .tabBar) // Hides TabBar
+
     }
     private func handleDeleteAction(for data: Data) {
         if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {
@@ -206,13 +218,19 @@ struct AddNoteListView: View {
         }
     }
 }
-
+#Preview {
+    AddNoteListView(tags: .constant([]), isAddViewPresented: .constant(true)) {
+        
+    }
+}
 
 enum ActionSheetPresentation: Identifiable {
     case smile
     case feeling
     case showAlert
-    
+    case showTags
+//    case showPhotoLibrary
+    case showTextEditor
     // Provide a unique ID for each case
     var id: String {
         switch self {
@@ -222,6 +240,14 @@ enum ActionSheetPresentation: Identifiable {
             return "feeling"
         case .showAlert:
             return "showAlert"
+        case .showTags:
+            return "showTags"
+//        case .showPhotoLibrary:
+//            return "showPhotoLibrary"
+        case .showTextEditor:
+            return "showTextEditor"
         }
     }
 }
+
+

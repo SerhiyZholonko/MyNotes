@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		181D37062D03393D00C9626D /* ResizableTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D37052D03393D00C9626D /* ResizableTextEditor.swift */; };
+		182899432D24102A000DB8F4 /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182899422D24102A000DB8F4 /* TextEditView.swift */; };
 		185A33762D2039B800E7648E /* CalendarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33752D2039B800E7648E /* CalendarScreen.swift */; };
 		185A33782D203A4A00E7648E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33772D203A4A00E7648E /* CalendarView.swift */; };
 		186764562D16C2EF00644885 /* EnergyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186764552D16C2EF00644885 /* EnergyView.swift */; };
@@ -32,6 +33,7 @@
 		18ADF0732CFB3D0400B1D886 /* NoteDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADF0722CFB3D0400B1D886 /* NoteDetailViewModel.swift */; };
 		18ADF0762CFB3FE200B1D886 /* EditNoteDetailCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADF0752CFB3FE200B1D886 /* EditNoteDetailCellView.swift */; };
 		18ADF0782CFB446A00B1D886 /* NoEditNoteDetailCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADF0772CFB446A00B1D886 /* NoEditNoteDetailCellView.swift */; };
+		18B8620F2D251EA200DC79DE /* AddTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B8620E2D251EA200DC79DE /* AddTagsView.swift */; };
 		18EE3B442D0DA95F00EDBC9C /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EE3B432D0DA95F00EDBC9C /* NoteRow.swift */; };
 		18F5B59B2D16DA5900867666 /* EnergyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5B59A2D16DA5900867666 /* EnergyItem.swift */; };
 		18F5B59D2D16DB7900867666 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5B59C2D16DB7900867666 /* Extensions.swift */; };
@@ -41,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		181D37052D03393D00C9626D /* ResizableTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableTextEditor.swift; sourceTree = "<group>"; };
+		182899422D24102A000DB8F4 /* TextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
 		185A33752D2039B800E7648E /* CalendarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarScreen.swift; sourceTree = "<group>"; };
 		185A33772D203A4A00E7648E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		186764552D16C2EF00644885 /* EnergyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyView.swift; sourceTree = "<group>"; };
@@ -66,6 +69,7 @@
 		18ADF0722CFB3D0400B1D886 /* NoteDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailViewModel.swift; sourceTree = "<group>"; };
 		18ADF0752CFB3FE200B1D886 /* EditNoteDetailCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteDetailCellView.swift; sourceTree = "<group>"; };
 		18ADF0772CFB446A00B1D886 /* NoEditNoteDetailCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoEditNoteDetailCellView.swift; sourceTree = "<group>"; };
+		18B8620E2D251EA200DC79DE /* AddTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagsView.swift; sourceTree = "<group>"; };
 		18EE3B432D0DA95F00EDBC9C /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		18F5B59A2D16DA5900867666 /* EnergyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyItem.swift; sourceTree = "<group>"; };
 		18F5B59C2D16DB7900867666 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -253,6 +257,8 @@
 			children = (
 				18F5CB662D169F8C00149279 /* EmojiView.swift */,
 				186764552D16C2EF00644885 /* EnergyView.swift */,
+				182899422D24102A000DB8F4 /* TextEditView.swift */,
+				18B8620E2D251EA200DC79DE /* AddTagsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -335,11 +341,13 @@
 				18ADF0502CFAF3CC00B1D886 /* ContentView.swift in Sources */,
 				18ADF0672CFB16DB00B1D886 /* AddNoteListView.swift in Sources */,
 				18ADF06B2CFB1A7700B1D886 /* TagsListView.swift in Sources */,
+				182899432D24102A000DB8F4 /* TextEditView.swift in Sources */,
 				18ADF0592CFAF4F200B1D886 /* NoteModel.swift in Sources */,
 				18ADF0642CFB151700B1D886 /* NotesListViewSection.swift in Sources */,
 				18F5CB692D16A56000149279 /* FeelingItem.swift in Sources */,
 				18ADF0602CFB148B00B1D886 /* TagsView.swift in Sources */,
 				186764562D16C2EF00644885 /* EnergyView.swift in Sources */,
+				18B8620F2D251EA200DC79DE /* AddTagsView.swift in Sources */,
 				18ADF05B2CFAF58000B1D886 /* TagModel.swift in Sources */,
 				18ADF0562CFAF42B00B1D886 /* NotesListView.swift in Sources */,
 				187FFA3E2CFC439A007D5995 /* MainTabView.swift in Sources */,

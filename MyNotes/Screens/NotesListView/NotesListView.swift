@@ -17,9 +17,11 @@ struct NotesListView: View {
     @StateObject var viewModel = NotesListViewModel()
     @State private var isShowingAddTagSheet = false
     @State private var isSearching = false
+    @State private var isFiltering = false
     var body: some View {
         NavigationStack {
             VStack {
+                if isFiltering {
                 TagsView(tags: viewModel.tags, selectedTag: $viewModel.selectedTag, isShowingAddTagSheet: $isShowingAddTagSheet, onDelete: { tag in
                     viewModel.deleteTag(tag, modelContext: modelContext)
                 })
@@ -29,6 +31,7 @@ struct NotesListView: View {
                         .stroke(Color.gray.opacity(0.3), lineWidth: 1) // Border color and width
                 )
                 .padding()
+            }
                 // Search bar
                 if viewModel.filteredNotes.count > 10 {
                     VStack {
@@ -109,16 +112,16 @@ struct NotesListView: View {
                     isAddViewPresented = true
                 }
             }
-            .fullScreenCover(isPresented: $viewModel.isAdd, onDismiss: {
-                viewModel.fetchNotes(offset: 0, modelContext: modelContext)
-            }) {
-
-                AddNoteListView(tags: $viewModel.tags) {
-                    viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
-                }
-                .presentationDetents([.large])
-                .presentationDragIndicator(.visible)
-            }
+//            .fullScreenCover(isPresented: $viewModel.isAdd, onDismiss: {
+//                viewModel.fetchNotes(offset: 0, modelContext: modelContext)
+//            }) {
+//
+//                AddNoteListView(tags: $viewModel.tags) {
+//                    viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
+//                }
+//                .presentationDetents([.large])
+//                .presentationDragIndicator(.visible)
+//            }
             .sheet(isPresented: $isShowingAddTagSheet, content: {
                 VStack(spacing: 20) {
                     Text("Enter new tag")
@@ -142,15 +145,39 @@ struct NotesListView: View {
                 .presentationDetents([.fraction(0.3), .medium, .large])
             })
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { isFiltering.toggle() }) {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .tint(.black)
+                    }
+                }
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { viewModel.isAdd.toggle() }) {
+                    NavigationLink {
+                        AddNoteListView(tags: $viewModel.tags, isAddViewPresented: $isAddViewPresented) {
+                            viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
+                        }
+                    } label: {
                         Image("notes")
                             .resizable()
                             .frame(width: 40, height: 40)
                     }
+
+//                    Button(action: {
+//                       
+//
+//                       /* viewModel.isAdd.toggle()*/ }) {
+//                        Image("notes")
+//                            .resizable()
+//                            .frame(width: 40, height: 40)
+//                    }
                 }
             }
-            
+            .toolbar(.visible, for: .tabBar)
+
         }
         .onAppear {
             viewModel.fetchTags(modelContext: modelContext)
