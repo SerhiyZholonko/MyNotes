@@ -22,7 +22,6 @@ struct NoteDetailView: View {
         _isAddViewPresented = isAddViewPresented
         self.updateNoteList = updateNoteList
         self._viewMModel = ObservedObject(wrappedValue: NoteDetailViewModel(note: note, allTags: note.tags))
-        
     }
     
    // EditNoteDetailCellView
@@ -32,7 +31,7 @@ struct NoteDetailView: View {
                 EditNoteDetailCellView(isEditMode: $isEditMode)
                     .environmentObject(viewMModel)
             } else {
-                NoEditNoteDetailCellView()
+                NoEditNoteDetailCellView(isEditMode: $isEditMode)
                     .environmentObject(viewMModel)
             }
             Spacer()

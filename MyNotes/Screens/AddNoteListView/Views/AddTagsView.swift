@@ -11,14 +11,16 @@ import SwiftData
 
 struct AddTagsView: View {
     @Environment(\.dismiss) private var dismiss
-
+    @EnvironmentObject var viewModel: AddNoteListViewModel
     @Query(sort: \TagModel.name) var tags: [TagModel]
     @Binding var selectedTags: Set<TagModel>
     var isAddTags: Binding<Bool>? = nil // Optional Binding with default value
 
     let columns = [
-        GridItem(.flexible(), spacing: 16), // Adjust spacing between columns
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible()), // Adjust spacing between columns
+        GridItem(.flexible()),
+        GridItem(.flexible())
+
     ]
 
     var body: some View {
@@ -28,25 +30,36 @@ struct AddTagsView: View {
                     Text("No tags added yet.")
                         .foregroundColor(.secondary)
                 } else {
-                    ScrollView(.vertical, showsIndicators: false) {
+                    ScrollView(.horizontal, showsIndicators: false) {
                         LazyVGrid(columns: columns, alignment: .leading, spacing: 8) { // Spacing between rows
                             ForEach(tags) { tag in
                                 TagCell(tag: tag, selectedTags: $selectedTags)
-                                    .padding(.horizontal, 4)
+                                    .frame(width: 150, alignment: .leading)
+//                                    .padding(.horizontal, 4)
                             }
                         }
                         .padding()
                     }
                 }
+                Spacer()
             }
             .navigationTitle("Tags")
-            .navigationBarItems(trailing:
+            .navigationBarItems(
+                leading:
+                    Button(action: {
+                        viewModel.actionSheetPresentation = .showAlert
+}, label: {
+Image(systemName: "plus")
+
+}),
+                trailing:
                                     Button(action: {
                 dismiss()
             }, label: {
                 Image(systemName: "checkmark")
 
             })
+           
                                    )
             
         }

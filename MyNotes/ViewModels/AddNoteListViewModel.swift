@@ -26,6 +26,16 @@ class AddNoteListViewModel: ObservableObject {
     
     @Published var selectedTags = Set<TagModel>()
     
+    @Published var selectedFontName: FontName? = .default
+    @Published var selectedFontSize: FontSize? = .h3
+    @Published var selectedFontColor: FontColor? = .primary
+    var selectedFont: UIFont! {
+          guard let fontName = selectedFontName?.fontName, let fontSize = selectedFontSize?.fontValue else {
+              return UIFont(name: ".SFUIText", size: 14)!
+          }
+          return UIFont(name: fontName, size: fontSize)
+      }
+    
     @Published var selectedFeeling: FeelingItem = FeelingItem(emoji: "😊", name: "Happy")
     @Published var selectedEnergy: EnergyItem = EnergyItem(color: "#00FF00", name: "Growth", sfSymbol: "leaf.fill")
     let feelings: [FeelingItem] = [
@@ -94,27 +104,6 @@ class AddNoteListViewModel: ObservableObject {
     func deleteImage(at index: Int) {
            selectedCoverDataList.remove(at: index)
        }
-//    func saveNewTag(in context: ModelContext) {
-//            // Ensure the tag name is not empty
-//            guard !newTag.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-//
-//            // Create a new tag
-//            let tag = TagModel(name: newTag)
-//
-//            // Add the new tag to the context
-//            context.insert(tag)
-//
-//            // Save the context to persist changes
-//            do {
-//                try context.save()
-//                // Clear the input field
-//                newTag = ""
-//                // Optionally update the `tags` array to reflect changes in UI
-//                tags.append(tag)
-//            } catch {
-//                print("Failed to save the new tag: \(error.localizedDescription)")
-//            }
-//        }
     func saveNewTag(in context: ModelContext) {
         guard !newTag.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         let tag = TagModel(name: newTag)

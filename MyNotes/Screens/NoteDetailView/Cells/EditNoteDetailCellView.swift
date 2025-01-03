@@ -25,8 +25,14 @@ struct EditNoteDetailCellView: View {
         VStack(alignment: .leading) {
       
             VStack {
-                TextField("Title", text: $viewModel.title)
-                    .textFieldStyle(.plain)
+                HStack {
+                    TextField("Title", text: $viewModel.title)
+                        .textFieldStyle(.plain)
+                    Spacer()
+                    EnergyAndFeelingView(isEditMode: $isEditMode)
+                        .environmentObject(viewModel)
+                }
+                
                     .padding(.vertical)
                 ResizableTextEditor(text: $viewModel.note, placeholder: "Note")
                     .lineLimit(2)
@@ -99,31 +105,50 @@ struct EditNoteDetailCellView: View {
                 isEditingImages = false
             }
         }
-        .sheet(isPresented: $isAddTags, content: {
-            VStack(spacing: 20) {
-                Text("Enter new tag")
-                    .font(.headline)
-                TextField("Tag name", text: $viewModel.newTag)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                HStack {
-                    Button("Cancel") {
-                        isAddTags.toggle()
-                    }
-                    .foregroundColor(.red)
-                    Spacer()
-                    Button("Add Tag") {
-                        print("New Tag: \(viewModel.newTag)")
-                        viewModel.saveNewTag(in: context)
-                        isAddTags.toggle()
-
-//                        viewModel.actionSheetPresentation = nil
-                    }
-                }
-                .padding()
+        .sheet(item: $viewModel.actionSheetPresentation){ item in
+            
+            switch item {
+            case .feeling:
+                EditEnergyView(actionSheetPresentation: $viewModel.actionSheetPresentation)
+                    .environmentObject(viewModel)
+                    .presentationDetents([.medium])
+            case .smile:
+                EditEmojiView(actionSheetPresentation: $viewModel.actionSheetPresentation)
+                    .environmentObject(viewModel)
+                    .presentationDetents([.medium]) 
+            case .showAlert:
+                Text("showAlert")
+            case .showTags:
+                Text("showTags")
+            case .showTextEditor:
+                Text("showTextEditor")
             }
-            .presentationDetents([.fraction(0.3), .medium, .large])
-        })
+        }
+//        .sheet(isPresented: $isAddTags, content: {
+//            VStack(spacing: 20) {
+//                Text("Enter new tag")
+//                    .font(.headline)
+//                TextField("Tag name", text: $viewModel.newTag)
+//                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                    .padding()
+//                HStack {
+//                    Button("Cancel") {
+//                        isAddTags.toggle()
+//                    }
+//                    .foregroundColor(.red)
+//                    Spacer()
+//                    Button("Add Tag") {
+//                        print("New Tag: \(viewModel.newTag)")
+//                        viewModel.saveNewTag(in: context)
+//                        isAddTags.toggle()
+//
+////                        viewModel.actionSheetPresentation = nil
+//                    }
+//                }
+//                .padding()
+//            }
+//            .presentationDetents([.fraction(0.3), .medium, .large])
+//        })
         .onAppear {
             selectedCoverData = viewModel.imagesData
         }

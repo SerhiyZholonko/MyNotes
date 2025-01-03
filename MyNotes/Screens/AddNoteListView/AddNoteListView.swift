@@ -177,14 +177,14 @@ struct AddNoteListView: View {
                             .padding()
                         HStack {
                             Button("Cancel") {
-                                viewModel.actionSheetPresentation = nil
+                                viewModel.actionSheetPresentation = .showTags
                             }
                             .foregroundColor(.red)
                             Spacer()
                             Button("Add Tag") {
                                 print("New Tag: \(viewModel.newTag)")
                                 viewModel.saveNewTag(in: context)
-                                viewModel.actionSheetPresentation = nil
+                                viewModel.actionSheetPresentation = .showTags
                             }
                         }
                         .padding()
@@ -194,10 +194,12 @@ struct AddNoteListView: View {
                     AddTagsView(selectedTags: $viewModel.selectedTags)
 
                         .presentationDetents([.fraction(0.5), .medium, .large])
-
+                        .environmentObject(viewModel)
                         
                 case .showTextEditor:
-                    Text("showTextEditor")
+                    //Text("showTextEditor")
+                    FontView()
+                        .environmentObject(viewModel)   
                         .presentationDetents([.fraction(0.5), .medium, .large])
 
                 }

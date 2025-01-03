@@ -12,11 +12,17 @@ struct NoEditNoteDetailCellView: View {
     @EnvironmentObject var viewModel: NoteDetailViewModel
     @State private var selectedImage: UIImage? = nil  // Store the selected image
     @State private var isFullScreenPresented = false // Track full-screen presentation
-    
+    @Binding var isEditMode: Bool
+
     var body: some View {
         Group {
             VStack(alignment: .leading) {
-                Text(viewModel.title)
+                HStack {
+                    Text(viewModel.title)
+                    Spacer()
+                    EnergyAndFeelingView( isEditMode: $isEditMode)
+                        .environmentObject(viewModel)
+                }
                 Text(viewModel.note)
                 HStack {
                     if !viewModel.tags.isEmpty {

@@ -1,15 +1,16 @@
 //
-//  EmojiView.swift
+//  EditEmojiView.swift
 //  MyNotes
 //
-//  Created by apple on 21.12.2024.
+//  Created by apple on 02.01.2025.
 //
+
 
 import SwiftUI
 
 
-struct EmojiView: View {
-    @EnvironmentObject var viewModel: AddNoteListViewModel
+struct EditEmojiView: View {
+    @EnvironmentObject var viewModel: NoteDetailViewModel
 
     @Binding var actionSheetPresentation: ActionSheetPresentation?
     let columns = [
@@ -55,5 +56,3 @@ struct EmojiView: View {
 
     }
 }
-
-
