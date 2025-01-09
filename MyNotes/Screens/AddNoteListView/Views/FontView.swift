@@ -10,7 +10,7 @@ import SwiftUI
 
 
 
-enum FontSize: CaseIterable, Identifiable {
+ enum FontSize: CaseIterable, Identifiable {
     case h1
     case h2
     case h3
@@ -92,10 +92,11 @@ extension FontColor {
     }
 }
 struct FontView: View {
-    @EnvironmentObject var viewModel: AddNoteListViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
     @Environment (\.dismiss) private var dismiss
     let columns = Array(repeating: GridItem(.adaptive(minimum: 100), spacing: 16), count: 3) // Four columns with flexible width
 
+    var updateColor: ((Color) -> Void)?
 
     var body: some View {
         NavigationStack {
@@ -115,6 +116,8 @@ struct FontView: View {
                             )
                             .onTapGesture {
                                 viewModel.selectedFontColor = color
+                                viewModel.selectedTextColor = UIColor(color.color)
+                                updateColor?(color.color)
                             }
                     }
                 }

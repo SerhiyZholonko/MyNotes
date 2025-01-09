@@ -14,6 +14,7 @@ import SwiftData
 struct NotesListView: View {
     @Environment(\.modelContext) private var modelContext
     @Binding var isAddViewPresented: Bool
+    @StateObject var noteViewModel = NoteViewModel()
     @StateObject var viewModel = NotesListViewModel()
     @State private var isShowingAddTagSheet = false
     @State private var isSearching = false
@@ -93,13 +94,21 @@ struct NotesListView: View {
                 }
                 .navigationTitle("Notes List")
                 .navigationDestination(item: $viewModel.selectedNote) { note in
-                    NoteDetailView(isAddViewPresented: $isAddViewPresented, note: note) {
-                        // Refresh tags and notes after returning from detail view
-                               viewModel.fetchTags(modelContext: modelContext)
-                               viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
+                    NoteDetailView(){
+                        viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
+                       
+                    }
+                    
 
+                    .environmentObject(noteViewModel)
+                    .onAppear {
+                        noteViewModel.originalNote = note
+                        noteViewModel.note = note
+                        noteViewModel.tags = note.tags
+                        isAddViewPresented = false
                     }
                 }
+
                 .listStyle(PlainListStyle())
                 .onAppear {
                     if viewModel.notes.isEmpty {
@@ -112,16 +121,7 @@ struct NotesListView: View {
                     isAddViewPresented = true
                 }
             }
-//            .fullScreenCover(isPresented: $viewModel.isAdd, onDismiss: {
-//                viewModel.fetchNotes(offset: 0, modelContext: modelContext)
-//            }) {
-//
-//                AddNoteListView(tags: $viewModel.tags) {
-//                    viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
-//                }
-//                .presentationDetents([.large])
-//                .presentationDragIndicator(.visible)
-//            }
+
             .sheet(isPresented: $isShowingAddTagSheet, content: {
                 VStack(spacing: 20) {
                     Text("Enter new tag")
@@ -160,20 +160,19 @@ struct NotesListView: View {
                         AddNoteListView(tags: $viewModel.tags, isAddViewPresented: $isAddViewPresented) {
                             viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
                         }
+                        .environmentObject(noteViewModel)
+                        .onAppear {
+                            noteViewModel.reset()
+                            // Setup the new note
+                            noteViewModel.setup(note: nil, allTags: [])
+                        }
                     } label: {
                         Image("notes")
                             .resizable()
                             .frame(width: 40, height: 40)
                     }
 
-//                    Button(action: {
-//                       
-//
-//                       /* viewModel.isAdd.toggle()*/ }) {
-//                        Image("notes")
-//                            .resizable()
-//                            .frame(width: 40, height: 40)
-//                    }
+
                 }
             }
             .toolbar(.visible, for: .tabBar)

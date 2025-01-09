@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EnergyAndFeelingView: View {
-    @EnvironmentObject var viewModel: NoteDetailViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
     @Binding var isEditMode: Bool
     var body: some View {
         HStack {

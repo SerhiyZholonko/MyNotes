@@ -16,7 +16,12 @@ class AddNoteListViewModel: ObservableObject {
     @Published var dateNow: Date = Date()
     //Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date()
     @Published var title: String = ""
-    @Published var noteText: String = ""
+    
+    @Published var noteText = NSAttributedString(string: "Write and change text color.")
+    @Published var selectedTextColor: UIColor = .black
+   
+    @Published var selectedRange: NSRange = NSRange(location: 0, length: 0)
+    
     @Published var energyColor: String = ""
     @Published var energyImageName: String = ""
     @Published var emoji: String = ""
@@ -76,23 +81,34 @@ class AddNoteListViewModel: ObservableObject {
         EnergyItem(color: Color.brown.toHex(), name: "Stability", sfSymbol: "house.fill"),
         EnergyItem(color: Color.cyan.toHex(), name: "Freshness", sfSymbol: "drop.fill")
     ]
+
     func saveNote(in context: ModelContext, dismiss: @escaping () -> Void) {
+        // Convert noteText to RichTextEntity
+        guard let noteTextData = noteText.toData() else {
+            print("Failed to serialize attributed text.")
+            return
+        }
+        let richTextEntity = RichTextEntity(attributedTextData: noteTextData)
+        context.insert(richTextEntity) // Save RichTextEntity to context
+
+        // Create and save the note
         let note = NoteModel(
             date: dateNow,
             title: title,
-            noteText: noteText,
+            noteText: richTextEntity, // Use RichTextEntity
             energy: selectedEnergy,
             emoji: selectedFeeling,
             tags: Array(selectedTags),
-            coverImages: selectedCoverDataList // Save multiple images
+            coverImages: selectedCoverDataList
         )
-        
+
+        // Handle tags
         selectedTags.forEach { tag in
             tag.notes.append(note)
             context.insert(tag)
         }
         context.insert(note)
-        
+
         do {
             try context.save()
             dismiss()
@@ -100,7 +116,6 @@ class AddNoteListViewModel: ObservableObject {
             print("Failed to save note: \(error.localizedDescription)")
         }
     }
-
     func deleteImage(at index: Int) {
            selectedCoverDataList.remove(at: index)
        }
@@ -115,6 +130,25 @@ class AddNoteListViewModel: ObservableObject {
             tags.append(tag)  // Update the shared tags array
         } catch {
             print("Failed to save the new tag: \(error.localizedDescription)")
+        }
+    }
+}
+extension NSAttributedString {
+    func toData() -> Data? {
+        do {
+            return try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
+        } catch {
+            print("Error archiving NSAttributedString: \(error)")
+            return nil
+        }
+    }
+
+    static func fromData(_ data: Data) -> NSAttributedString? {
+        do {
+            return try NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data)
+        } catch {
+            print("Error unarchiving NSAttributedString: \(error)")
+            return nil
         }
     }
 }

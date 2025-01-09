@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct EditEmojiView: View {
-    @EnvironmentObject var viewModel: NoteDetailViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
 
     @Binding var actionSheetPresentation: ActionSheetPresentation?
     let columns = [

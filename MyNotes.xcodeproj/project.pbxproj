@@ -16,6 +16,9 @@
 		187FFA3E2CFC439A007D5995 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3D2CFC439A007D5995 /* MainTabView.swift */; };
 		187FFA402CFC43C9007D5995 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */; };
 		189CEA9D2D07657300E373DD /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189CEA9C2D07657300E373DD /* Date.swift */; };
+		18AB72952D2834AF000BCF06 /* EditFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72942D2834AF000BCF06 /* EditFontView.swift */; };
+		18AB72972D295BCF000BCF06 /* AddEditFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72962D295BCF000BCF06 /* AddEditFontView.swift */; };
+		18AB72992D295F9D000BCF06 /* DetailTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */; };
 		18ADF0502CFAF3CC00B1D886 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADF04D2CFAF3CC00B1D886 /* ContentView.swift */; };
 		18ADF0512CFAF3CC00B1D886 /* MyNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18ADF04E2CFAF3CC00B1D886 /* MyNotesApp.swift */; };
 		18ADF0522CFAF3CC00B1D886 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 18ADF04A2CFAF3CC00B1D886 /* Preview Assets.xcassets */; };
@@ -55,6 +58,9 @@
 		187FFA3D2CFC439A007D5995 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
 		189CEA9C2D07657300E373DD /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		18AB72942D2834AF000BCF06 /* EditFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFontView.swift; sourceTree = "<group>"; };
+		18AB72962D295BCF000BCF06 /* AddEditFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditFontView.swift; sourceTree = "<group>"; };
+		18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextEditView.swift; sourceTree = "<group>"; };
 		18ADF0372CFAF3A700B1D886 /* MyNotes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyNotes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18ADF04A2CFAF3CC00B1D886 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		18ADF04C2CFAF3CC00B1D886 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -103,6 +109,8 @@
 				18B4AB0D2D269E58006CF438 /* EnergyAndFeelingView.swift */,
 				18B4AB0F2D26BB56006CF438 /* EditEmojiView.swift */,
 				18B4AB112D26BE6E006CF438 /* EditEnergyView.swift */,
+				18AB72942D2834AF000BCF06 /* EditFontView.swift */,
+				18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -266,6 +274,7 @@
 		18F5CB652D169F0600149279 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				18AB72962D295BCF000BCF06 /* AddEditFontView.swift */,
 				18F5CB662D169F8C00149279 /* EmojiView.swift */,
 				186764552D16C2EF00644885 /* EnergyView.swift */,
 				182899422D24102A000DB8F4 /* TextEditView.swift */,
@@ -364,6 +373,7 @@
 				1847FABE2D26D23F008FAC12 /* FontView.swift in Sources */,
 				18ADF05B2CFAF58000B1D886 /* TagModel.swift in Sources */,
 				18ADF0562CFAF42B00B1D886 /* NotesListView.swift in Sources */,
+				18AB72992D295F9D000BCF06 /* DetailTextEditView.swift in Sources */,
 				187FFA3E2CFC439A007D5995 /* MainTabView.swift in Sources */,
 				18ADF06E2CFB1AC100B1D886 /* TagCell.swift in Sources */,
 				189CEA9D2D07657300E373DD /* Date.swift in Sources */,
@@ -374,12 +384,14 @@
 				181D37062D03393D00C9626D /* ResizableTextEditor.swift in Sources */,
 				18ADF0762CFB3FE200B1D886 /* EditNoteDetailCellView.swift in Sources */,
 				185A33762D2039B800E7648E /* CalendarScreen.swift in Sources */,
+				18AB72972D295BCF000BCF06 /* AddEditFontView.swift in Sources */,
 				18EE3B442D0DA95F00EDBC9C /* NoteRow.swift in Sources */,
 				18ADF05E2CFB140100B1D886 /* NotesListViewModel.swift in Sources */,
 				185A33782D203A4A00E7648E /* CalendarView.swift in Sources */,
 				18F5B59D2D16DB7900867666 /* Extensions.swift in Sources */,
 				18ADF0732CFB3D0400B1D886 /* NoteDetailViewModel.swift in Sources */,
 				18ADF0692CFB175900B1D886 /* AddNoteListViewModel.swift in Sources */,
+				18AB72952D2834AF000BCF06 /* EditFontView.swift in Sources */,
 				18ADF0512CFAF3CC00B1D886 /* MyNotesApp.swift in Sources */,
 				187FFA402CFC43C9007D5995 /* MainTabViewModel.swift in Sources */,
 			);

@@ -10,42 +10,40 @@
 import SwiftUI
 import SwiftData
 
-struct NoteDetailView: View {
-    @Binding var isAddViewPresented: Bool
 
+
+
+struct NoteDetailView: View {
+//    @Binding var isAddViewPresented: Bool
     @State var isEditMode: Bool = false
-    @ObservedObject var viewMModel: NoteDetailViewModel
+    @EnvironmentObject var viewModel: NoteViewModel  // Correct ObservedObject usage
     @Environment(\.modelContext) private var modelContext  // Access the ModelContext
     @Environment(\.dismiss) private var dismiss
-    var updateNoteList: (() -> Void)
-    init(isAddViewPresented: Binding<Bool>, note: NoteModel, updateNoteList: @escaping (() -> Void)) {
-        _isAddViewPresented = isAddViewPresented
-        self.updateNoteList = updateNoteList
-        self._viewMModel = ObservedObject(wrappedValue: NoteDetailViewModel(note: note, allTags: note.tags))
-    }
+    var updateNoteList: (() -> Void)?
     
-   // EditNoteDetailCellView
     var body: some View {
         VStack {
             if isEditMode {
                 EditNoteDetailCellView(isEditMode: $isEditMode)
-                    .environmentObject(viewMModel)
+                    .environmentObject(viewModel)  // Pass viewModel as EnvironmentObject
             } else {
                 NoEditNoteDetailCellView(isEditMode: $isEditMode)
-                    .environmentObject(viewMModel)
+                    .environmentObject(viewModel)  // Pass viewModel as EnvironmentObject
             }
             Spacer()
         }
         .padding()
-
         .navigationTitle("Book Details")
         .navigationBarBackButtonHidden()
-        .toolbar{
+        .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     if isEditMode {
-                        viewMModel.updateNote(in: modelContext)
-                        isEditMode.toggle()
+                        viewModel.saveOrUpdateNote(in: modelContext) {
+                            updateNoteList?()
+                            isEditMode.toggle()
+                            dismiss()
+                        }
                     } else {
                         isEditMode.toggle()
                     }
@@ -61,9 +59,6 @@ struct NoteDetailView: View {
                         .fontWeight(.bold)
                 }
             }
-        }
-        .onAppear {
-            isAddViewPresented = false
         }
     }
 }

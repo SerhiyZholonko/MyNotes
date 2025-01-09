@@ -31,7 +31,7 @@ struct NoteRow: View {
                 
             }
            
-            Text(note.noteText) // Replace with your actual property
+            Text(note.noteText.plainText) // Replace with your actual property
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             Text(note.date, style: .date) // Display the date

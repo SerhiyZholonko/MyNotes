@@ -26,7 +26,7 @@ struct NotesListViewSection: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Text(note.noteText)
+                    Text(note.noteText.plainText)
                         .font(.body)
                         .multilineTextAlignment(.leading)
                         .lineLimit(nil)

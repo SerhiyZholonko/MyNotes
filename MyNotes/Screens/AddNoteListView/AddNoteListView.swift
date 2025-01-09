@@ -14,10 +14,11 @@ import PhotosUI
 
 
 struct AddNoteListView: View {
-    @StateObject private var viewModel = AddNoteListViewModel()
+    @EnvironmentObject private var viewModel: NoteViewModel
     @State private var selectedCoverData: [Data] = []
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
     @Binding var isAddViewPresented: Bool
+    @State private var textSize: CGFloat = 40
 
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -61,7 +62,24 @@ struct AddNoteListView: View {
                             }
                         }
                         .padding(.trailing)
-                        ResizableTextEditor(text: $viewModel.noteText, placeholder: "Note")
+                        RichTextEditor(
+                            attributedText: $viewModel.noteText,
+                            selectedTextColor: $viewModel.selectedTextColor,
+                            selectedRange: $viewModel.selectedRange,
+                            textSize: Binding<CGFloat>(
+                                get: { viewModel.selectedFontSize.fontValue },
+                                set: { newSize in
+                                    // Update the view model when the editor changes the size
+                                    if let newFontSize = FontSize.allCases.first(where: { $0.fontValue == newSize }) {
+                                        viewModel.selectedFontSize = newFontSize
+                                    }
+                                }
+                            ),
+                            isEditable: true
+                        )
+                            .frame(height: 200)  // Set a height for the editor to be visible
+                                    .border(Color.gray)
+                       
                     }
 
                                 ScrollView(.horizontal) {
@@ -147,7 +165,8 @@ struct AddNoteListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        viewModel.saveNote(in: context) {
+
+                        viewModel.saveOrUpdateNote(in: context) {
                             fetchNote()
                             dismiss()
                         }
@@ -206,7 +225,7 @@ struct AddNoteListView: View {
             }
            
             .onAppear {
-                isAddViewPresented = false
+                isAddViewPresented = false// show tapbar
             }
             
         }
@@ -244,8 +263,6 @@ enum ActionSheetPresentation: Identifiable {
             return "showAlert"
         case .showTags:
             return "showTags"
-//        case .showPhotoLibrary:
-//            return "showPhotoLibrary"
         case .showTextEditor:
             return "showTextEditor"
         }

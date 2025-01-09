@@ -10,7 +10,7 @@
 import SwiftUI
 
 struct TextEditView: View {
-    @EnvironmentObject var viewModel: AddNoteListViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
 //    var dismissKeybourd: () -> Void
 //    @EnvironmentObject var viewModel: MainTabViewViewModel
 

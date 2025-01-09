@@ -9,9 +9,11 @@ import SwiftUI
 
 
 struct NoEditNoteDetailCellView: View {
-    @EnvironmentObject var viewModel: NoteDetailViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
     @State private var selectedImage: UIImage? = nil  // Store the selected image
     @State private var isFullScreenPresented = false // Track full-screen presentation
+    @State private var textEditerHeight: CGFloat = 200
+    @State private var textSize: CGFloat = 16
     @Binding var isEditMode: Bool
 
     var body: some View {
@@ -19,11 +21,15 @@ struct NoEditNoteDetailCellView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(viewModel.title)
+                    
                     Spacer()
                     EnergyAndFeelingView( isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
-                Text(viewModel.note)
+//                Text(viewModel.noteText.string)
+                RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.selectedRange, textSize: $textSize)
+                    .frame(height: 200)  // Set a height for the editor to be visible
+                            .border(Color.gray)
                 HStack {
                     if !viewModel.tags.isEmpty {
                         Text("# ")

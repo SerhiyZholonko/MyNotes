@@ -14,7 +14,7 @@ class NoteModel: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()
     var date: Date
     var title: String
-    var noteText: String
+    var noteText: RichTextEntity
     var energy: EnergyItem
     var emoji: FeelingItem
     @Relationship(deleteRule: .nullify, inverse: \TagModel.notes)
@@ -23,7 +23,7 @@ class NoteModel: Identifiable {
     init(
         date: Date = Date(), // Default to current date
         title: String,
-        noteText: String,
+        noteText: RichTextEntity,
         energy: EnergyItem,
         emoji: FeelingItem,
         tags: [TagModel] = [], // Default empty tags
@@ -36,5 +36,30 @@ class NoteModel: Identifiable {
         self.emoji = emoji
         self.tags = tags
         self.coverImages = coverImages
+    }
+}
+
+
+@Model
+class RichTextEntity {
+    var id: UUID
+    var attributedTextData: Data // To store serialized NSAttributedString
+
+    init(attributedTextData: Data) {
+        self.id = UUID()
+        self.attributedTextData = attributedTextData
+    }
+}
+extension RichTextEntity {
+    func toAttributedString() -> NSAttributedString? {
+        return NSAttributedString.fromData(attributedTextData)
+    }
+}
+extension RichTextEntity {
+    var plainText: String {
+        if let attributedString = NSAttributedString.fromData(attributedTextData) {
+            return attributedString.string // Extract plain text
+        }
+        return ""
     }
 }

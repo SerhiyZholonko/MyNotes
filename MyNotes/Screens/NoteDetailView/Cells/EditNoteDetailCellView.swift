@@ -14,16 +14,18 @@ struct EditNoteDetailCellView: View {
     @Query(sort: \TagModel.name) var tags: [TagModel]
     @Environment(\.modelContext) private var modelContext  // Access the ModelContext
     @Environment(\.modelContext) private var context
-    @EnvironmentObject var viewModel: NoteDetailViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
     @Binding var isEditMode: Bool
     @State private var selectedCover: [PhotosPickerItem] = []
     @State private var selectedCoverData: [Data] = []
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
     @State private var isAddTags: Bool = false
-    
+    @State var showPhotoPicker: Bool = false
+    @State var textEditorHeight: CGFloat = 200
+
     var body: some View {
         VStack(alignment: .leading) {
-      
+            ScrollView {
             VStack {
                 HStack {
                     TextField("Title", text: $viewModel.title)
@@ -34,84 +36,113 @@ struct EditNoteDetailCellView: View {
                 }
                 
                     .padding(.vertical)
-                ResizableTextEditor(text: $viewModel.note, placeholder: "Note")
-                    .lineLimit(2)
+
+                RichTextEditor(
+                    attributedText: $viewModel.noteText,
+                    selectedTextColor: $viewModel.selectedTextColor,
+                    selectedRange: $viewModel.selectedRange,
+                    textSize: Binding<CGFloat>(
+                        get: { viewModel.selectedFontSize.fontValue },
+                        set: { newSize in
+                            // Update the view model when the editor changes the size
+                            if let newFontSize = FontSize.allCases.first(where: { $0.fontValue == newSize }) {
+                                viewModel.selectedFontSize = newFontSize
+                            }
+                        }
+                    ),
+                    isEditable: true
+                )
+                    .frame(height: 200)  // Set a height for the editor to be visible
+                    .border(Color.gray)
             }
             .textFieldStyle(.roundedBorder)
-            TagsListView(selectedTags: $viewModel.selectedTags, isAddTags: $isAddTags)
-
-            .padding(.vertical)
-            HStack {
-                PhotosPicker(selection: $selectedCover, matching: .images, photoLibrary: .shared()) {
-                        Image(uiImage: UIImage(systemName: "plus.rectangle.fill")! )
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                }
-
-                VStack {
-                                    if !selectedCoverData.isEmpty {
-                                        ScrollView(.horizontal) {
-                                            HStack(spacing: 20) {
-                                                ForEach(selectedCoverData, id: \.self) { imageData in
-                                                    ZStack(alignment: .topTrailing) {
-                                                        Image(uiImage: UIImage(data: imageData) ?? UIImage(systemName: "photo")!)
-                                                            .resizable()
-                                                           
-                                                            .frame(width: 100, height: 100)
-                                                            .scaledToFill()
-                                                            .cornerRadius(20)
-                                                            .onLongPressGesture {
-                                                                withAnimation {
-                                                                    isEditingImages.toggle()  // Toggle edit mode
-                                                                }
-                                                            }
-                                                        
-                                                        if isEditingImages {
-
-                                                                ZStack{
-                                                                    Color.white
-                                                                        .frame(width: 30, height: 30)
-                                                                        .cornerRadius(15)
-
-                                                                    Image(systemName: "trash.fill")
-                                                                        .resizable()
-                                                                        .frame(width: 24, height: 24)
-                                                                        .foregroundColor(.red)
-                                                                        .onTapGesture {
-                                                                            if let index = selectedCoverData.firstIndex(of: imageData) {
-                                                                                selectedCoverData.remove(at: index)
-                                                                                viewModel.imagesData.remove(at: index)  // Update viewModel
-                                                                            }
-                                                                        }
-                                                                }
-                                    
-                                                                .offset(x: -5, y: 70)  // Adjust position to place in the middle of the top edge
-                                                            
-                                                                                                                                                                           
-                                                        }
-                                                    }
-                                                }
-                                            }
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach(viewModel.selectedCoverDataList, id: \.self) { data in
+                            if let image = UIImage(data: data) {
+                                ZStack(alignment: .topTrailing) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                      
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .frame(width: 100, height: 100)
+                                        .scaledToFill()
+                                        .cornerRadius(20)
+                                        .onLongPressGesture {
+                                            isEditingImages.toggle()
                                         }
-                                    } else {
-                                        Text("No Images")
+                                    if isEditingImages {
+                                        Button {
+                                            if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {
+                                                viewModel.selectedCoverDataList.remove(at: index)
+                                            }
+                                        } label: {
+                                            ZStack {
+                                                // Background Circle
+                                                Color.white
+                                                    .frame(width: 30, height: 30)
+                                                    .cornerRadius(15)
+
+                                                // Trash Icon
+                                                Image(systemName: "trash.fill")
+                                                    .resizable()
+                                                    .frame(width: 24, height: 24)
+                                                    .foregroundColor(.red)
+                                                    .onTapGesture {
+                                                        handleDeleteAction(for: data)
+                                                    }
+                                            }                                                        }
+                                        .offset(x: -5, y: 70)
                                     }
                                 }
-                            
+                            } else {
+                                Image(systemName: "photo.on.rectangle")
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .scaledToFill()
+                                    .cornerRadius(20)
+                            }
+                        }
+                    }
+                }
+    HStack( spacing: 8) {
+        
+        ForEach(Array(viewModel.selectedTags), id: \.id) { tag in
+            Text("#\(tag.name)")
         }
-        }
-        .onTapGesture {
-            if isEditingImages {
-                isEditingImages = false
-            }
-        }
+        Spacer()
+    }
+    Spacer()
+        
+    
+}
+.padding()
+}
+VStack {
+TextEditView(showPhotoPicker: $showPhotoPicker)
+    .environmentObject(viewModel)
+    .photosPicker(
+        isPresented: $showPhotoPicker,
+             selection: $viewModel.selectedCover,
+             matching: .images,
+             photoLibrary: .shared()
+         )
+}
+.task(id: viewModel.selectedCover) {
+for item in viewModel.selectedCover {
+    if let data = try? await item.loadTransferable(type: Data.self) {
+        viewModel.selectedCoverDataList.append(data)
+    }
+}
+}
+
         .sheet(item: $viewModel.actionSheetPresentation){ item in
             
             switch item {
             case .feeling:
                 EditEnergyView(actionSheetPresentation: $viewModel.actionSheetPresentation)
                     .environmentObject(viewModel)
-                    .presentationDetents([.medium])
+//                    .presentationDetents([.medium])
             case .smile:
                 EditEmojiView(actionSheetPresentation: $viewModel.actionSheetPresentation)
                     .environmentObject(viewModel)
@@ -119,36 +150,17 @@ struct EditNoteDetailCellView: View {
             case .showAlert:
                 Text("showAlert")
             case .showTags:
-                Text("showTags")
-            case .showTextEditor:
-                Text("showTextEditor")
+                AddTagsView(selectedTags: $viewModel.selectedTags)
+
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                    .environmentObject(viewModel)            case .showTextEditor:
+                FontView()
+                    .environmentObject(viewModel)
+                    .presentationDetents([.fraction(0.5), .medium, .large])
+                
             }
         }
-//        .sheet(isPresented: $isAddTags, content: {
-//            VStack(spacing: 20) {
-//                Text("Enter new tag")
-//                    .font(.headline)
-//                TextField("Tag name", text: $viewModel.newTag)
-//                    .textFieldStyle(RoundedBorderTextFieldStyle())
-//                    .padding()
-//                HStack {
-//                    Button("Cancel") {
-//                        isAddTags.toggle()
-//                    }
-//                    .foregroundColor(.red)
-//                    Spacer()
-//                    Button("Add Tag") {
-//                        print("New Tag: \(viewModel.newTag)")
-//                        viewModel.saveNewTag(in: context)
-//                        isAddTags.toggle()
-//
-////                        viewModel.actionSheetPresentation = nil
-//                    }
-//                }
-//                .padding()
-//            }
-//            .presentationDetents([.fraction(0.3), .medium, .large])
-//        })
+
         .onAppear {
             selectedCoverData = viewModel.imagesData
         }
@@ -159,6 +171,12 @@ struct EditNoteDetailCellView: View {
                     viewModel.imagesData.append(data)
                 }
             }
+        }
+    }
+    private func handleDeleteAction(for data: Data) {
+        if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {
+            viewModel.selectedCoverDataList.remove(at: index) // Update viewModel
+
         }
     }
 }

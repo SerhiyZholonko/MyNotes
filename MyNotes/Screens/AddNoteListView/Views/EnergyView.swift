@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EnergyView: View {
-    @EnvironmentObject var viewModel: AddNoteListViewModel
+    @EnvironmentObject var viewModel: NoteViewModel
     @Binding var actionSheetPresentation: ActionSheetPresentation?
     let columns = [
         GridItem(.flexible()),

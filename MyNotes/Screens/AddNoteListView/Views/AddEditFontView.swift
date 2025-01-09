@@ -1,18 +1,18 @@
 //
-//  DetailEditFontView.swift
+//  AddEditFontView.swift
 //  MyNotes
 //
 //  Created by apple on 04.01.2025.
 //
 
-
-#Preview {
-    DetailEditFontView()
-}
+//
+//#Preview {
+//    AddEditFontView()
+//}
 import SwiftUI
 
-struct DetailEditFontView: View {
-    @EnvironmentObject var viewModel: NoteDetailViewModel
+struct AddEditFontView: View {
+    @EnvironmentObject var viewModel: AddNoteListViewModel
     @Environment (\.dismiss) private var dismiss
     let columns = Array(repeating: GridItem(.adaptive(minimum: 100), spacing: 16), count: 3) // Four columns with flexible width
 

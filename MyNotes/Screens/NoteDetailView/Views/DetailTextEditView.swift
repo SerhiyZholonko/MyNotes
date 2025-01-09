@@ -8,11 +8,62 @@
 import SwiftUI
 
 struct DetailTextEditView: View {
+    @EnvironmentObject var viewModel: NoteViewModel
+//    var dismissKeybourd: () -> Void
+//    @EnvironmentObject var viewModel: MainTabViewViewModel
+
+    @Binding var showPhotoPicker: Bool
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Button  {
+//                    dismissKeybourd()
+//                    currentView = .listBullet
+
+                    print("list.bullet")
+                } label: {
+                    Image(systemName: "list.bullet")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.horizontal, 6)
+                }
+                Button  {
+//                    dismissKeybourd()
+//                    currentView = .textFormatSize
+                    viewModel.actionSheetPresentation = .showTextEditor
+                    print("textformat.size")
+                } label: {
+                    Image(systemName: "textformat.size")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.horizontal, 6)
+                }
+                Button  {
+//                    dismissKeybourd()
+//                    currentView = .tag
+                    viewModel.actionSheetPresentation = .showTags
+                } label: {
+                    Image(systemName: "tag")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.horizontal, 6)
+                }
+                Button  {
+//                    viewModel.actionSheetPresentation = .showPhotoLibrary
+//                    showPhotoPicker = true
+//                    viewModel.selectedCover = []
+                } label: {
+                    Image(systemName: "photo.on.rectangle.angled")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.horizontal, 6)
+                }
+            }
+            .padding()
+            .tint(.black)
+        }
+//        .background(viewModel.getSelectedColor())
+        .cornerRadius(10)
     }
 }
 
-#Preview {
-    DetailTextEditView()
-}
