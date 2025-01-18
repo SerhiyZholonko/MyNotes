@@ -14,22 +14,23 @@ struct NoEditNoteDetailCellView: View {
     @State private var isFullScreenPresented = false // Track full-screen presentation
     @State private var textEditerHeight: CGFloat = 200
     @State private var textSize: CGFloat = 16
+    @State private var selectedFontName: FontName? = .bold
+
     @Binding var isEditMode: Bool
 
     var body: some View {
         Group {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(viewModel.title)
-                    
+                    RichTextEditor(attributedText: $viewModel.title, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.titleSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none))
+                        .frame(height: 40)  // Set a height for the editor to be visible
                     Spacer()
                     EnergyAndFeelingView( isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
-//                Text(viewModel.noteText.string)
-                RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.selectedRange, textSize: $textSize)
+                RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.noteTextSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none))
                     .frame(height: 200)  // Set a height for the editor to be visible
-                            .border(Color.gray)
+//                            .border(Color.gray)
                 HStack {
                     if !viewModel.tags.isEmpty {
                         Text("# ")

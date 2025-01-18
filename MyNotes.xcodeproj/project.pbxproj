@@ -10,6 +10,7 @@
 		181D37062D03393D00C9626D /* ResizableTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D37052D03393D00C9626D /* ResizableTextEditor.swift */; };
 		182899432D24102A000DB8F4 /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182899422D24102A000DB8F4 /* TextEditView.swift */; };
 		1847FABE2D26D23F008FAC12 /* FontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1847FABD2D26D23F008FAC12 /* FontView.swift */; };
+		184F02212D37D1C700C32D30 /* KindOfListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F02202D37D1C700C32D30 /* KindOfListView.swift */; };
 		185A33762D2039B800E7648E /* CalendarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33752D2039B800E7648E /* CalendarScreen.swift */; };
 		185A33782D203A4A00E7648E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33772D203A4A00E7648E /* CalendarView.swift */; };
 		186764562D16C2EF00644885 /* EnergyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186764552D16C2EF00644885 /* EnergyView.swift */; };
@@ -52,6 +53,7 @@
 		181D37052D03393D00C9626D /* ResizableTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableTextEditor.swift; sourceTree = "<group>"; };
 		182899422D24102A000DB8F4 /* TextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
 		1847FABD2D26D23F008FAC12 /* FontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontView.swift; sourceTree = "<group>"; };
+		184F02202D37D1C700C32D30 /* KindOfListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindOfListView.swift; sourceTree = "<group>"; };
 		185A33752D2039B800E7648E /* CalendarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarScreen.swift; sourceTree = "<group>"; };
 		185A33772D203A4A00E7648E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		186764552D16C2EF00644885 /* EnergyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyView.swift; sourceTree = "<group>"; };
@@ -105,12 +107,27 @@
 		181D37042D03392200C9626D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				181D37052D03393D00C9626D /* ResizableTextEditor.swift */,
 				18B4AB0D2D269E58006CF438 /* EnergyAndFeelingView.swift */,
 				18B4AB0F2D26BB56006CF438 /* EditEmojiView.swift */,
 				18B4AB112D26BE6E006CF438 /* EditEnergyView.swift */,
 				18AB72942D2834AF000BCF06 /* EditFontView.swift */,
 				18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1859FFC52D33CCBE000F73FC /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				1859FFC62D33CCCE000F73FC /* Views */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		1859FFC62D33CCCE000F73FC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				181D37052D03393D00C9626D /* ResizableTextEditor.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -173,6 +190,7 @@
 				18ADF04C2CFAF3CC00B1D886 /* Assets.xcassets */,
 				18ADF04D2CFAF3CC00B1D886 /* ContentView.swift */,
 				18ADF04E2CFAF3CC00B1D886 /* MyNotesApp.swift */,
+				1859FFC52D33CCBE000F73FC /* UIKit */,
 				18ADF05C2CFB13F600B1D886 /* ViewModels */,
 				18ADF0572CFAF4CB00B1D886 /* Models */,
 				18ADF0542CFAF3E800B1D886 /* Screens */,
@@ -280,6 +298,7 @@
 				182899422D24102A000DB8F4 /* TextEditView.swift */,
 				18B8620E2D251EA200DC79DE /* AddTagsView.swift */,
 				1847FABD2D26D23F008FAC12 /* FontView.swift */,
+				184F02202D37D1C700C32D30 /* KindOfListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -368,6 +387,7 @@
 				18ADF0642CFB151700B1D886 /* NotesListViewSection.swift in Sources */,
 				18F5CB692D16A56000149279 /* FeelingItem.swift in Sources */,
 				18ADF0602CFB148B00B1D886 /* TagsView.swift in Sources */,
+				184F02212D37D1C700C32D30 /* KindOfListView.swift in Sources */,
 				186764562D16C2EF00644885 /* EnergyView.swift in Sources */,
 				18B8620F2D251EA200DC79DE /* AddTagsView.swift in Sources */,
 				1847FABE2D26D23F008FAC12 /* FontView.swift in Sources */,

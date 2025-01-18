@@ -15,7 +15,7 @@ class AddNoteListViewModel: ObservableObject {
     @Published var actionSheetPresentation: ActionSheetPresentation? = nil // Optional enum
     @Published var dateNow: Date = Date()
     //Calendar.current.date(byAdding: .day, value: 7, to: Date()) ?? Date()
-    @Published var title: String = ""
+    @Published var title = NSAttributedString(string: "")
     
     @Published var noteText = NSAttributedString(string: "Write and change text color.")
     @Published var selectedTextColor: UIColor = .black
@@ -84,17 +84,29 @@ class AddNoteListViewModel: ObservableObject {
 
     func saveNote(in context: ModelContext, dismiss: @escaping () -> Void) {
         // Convert noteText to RichTextEntity
+//        guard let noteTextData = noteText.toData() else {
+//            print("Failed to serialize attributed text.")
+//            return
+//        }
+//        let richTextEntity = RichTextEntity(attributedTextData: noteTextData)
+//        context.insert(richTextEntity) // Save RichTextEntity to context
+        guard let titleData = title.toData() else {
+            print("Failed to serialize attributed text.")
+            return
+        }
         guard let noteTextData = noteText.toData() else {
             print("Failed to serialize attributed text.")
             return
         }
-        let richTextEntity = RichTextEntity(attributedTextData: noteTextData)
-        context.insert(richTextEntity) // Save RichTextEntity to context
+        let richTitleEntity = RichTextEntity(attributedTextData: titleData)
+        context.insert(richTitleEntity)
 
+        let richTextEntity = RichTextEntity(attributedTextData: noteTextData)
+        context.insert(richTextEntity)
         // Create and save the note
         let note = NoteModel(
             date: dateNow,
-            title: title,
+            title: richTitleEntity,
             noteText: richTextEntity, // Use RichTextEntity
             energy: selectedEnergy,
             emoji: selectedFeeling,

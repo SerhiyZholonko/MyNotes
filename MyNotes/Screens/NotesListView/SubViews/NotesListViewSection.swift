@@ -22,7 +22,7 @@ struct NotesListViewSection: View {
                     Text(note.date.toString())
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(note.title)
+                    Text(note.title.plainText)
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
 

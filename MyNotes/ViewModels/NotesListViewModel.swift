@@ -35,7 +35,7 @@ class NotesListViewModel: ObservableObject {
             return filteredByTag
         } else {
             return filteredByTag.filter { note in
-                note.title.localizedCaseInsensitiveContains(searchText) ||
+                note.title.plainText.localizedCaseInsensitiveContains(searchText) ||
                 note.noteText.plainText.localizedCaseInsensitiveContains(searchText)
             }
         }

@@ -13,7 +13,7 @@ import SwiftData
 class NoteModel: Identifiable {
     @Attribute(.unique) var id: UUID = UUID()
     var date: Date
-    var title: String
+    var title: RichTextEntity
     var noteText: RichTextEntity
     var energy: EnergyItem
     var emoji: FeelingItem
@@ -22,7 +22,7 @@ class NoteModel: Identifiable {
     var coverImages: [Data] = [] // Store multiple images
     init(
         date: Date = Date(), // Default to current date
-        title: String,
+        title: RichTextEntity,
         noteText: RichTextEntity,
         energy: EnergyItem,
         emoji: FeelingItem,

@@ -167,10 +167,11 @@ class NoteViewModel: ObservableObject {
     @Published var note: NoteModel? {
         didSet { loadNoteDetails(note) }
     }
-    @Published var title: String = ""
-    @Published var noteText = NSAttributedString(string: "Write and change text color.")
+    @Published var title = NSAttributedString(string: "")
+    @Published var noteText = NSAttributedString(string: "")
     @Published var selectedTextColor: UIColor = .black
-    @Published var selectedRange: NSRange = NSRange(location: 0, length: 0)
+    @Published var noteTextSelectedRange: NSRange = NSRange(location: 0, length: 0)
+    @Published var titleSelectedRange: NSRange = NSRange(location: 0, length: 0)
     @Published var selectedFontName: FontName? = .default
     @Published var selectedFontSize: FontSize = .h3{
         didSet{
@@ -243,10 +244,11 @@ class NoteViewModel: ObservableObject {
     }
     func reset() {
         note = nil
-        title = ""
-        noteText = NSAttributedString(string: "Write and change text color.")
+        title = NSAttributedString(string: "")
+        noteText = NSAttributedString(string: "")
         selectedTextColor = .black
-        selectedRange = NSRange(location: 0, length: 0)
+        noteTextSelectedRange = NSRange(location: 0, length: 0)
+        titleSelectedRange = NSRange(location: 0, length: 0)
         selectedFontName = .default
         selectedFontSize = .h3
         selectedFontColor = .primary
@@ -274,7 +276,11 @@ class NoteViewModel: ObservableObject {
     }
     private func loadNoteDetails(_ note: NoteModel?) {
         guard let note = note else { return }
-        title = note.title
+        if let attributedText = note.title.toAttributedString() {
+            title = attributedText
+        } else {
+            noteText = NSAttributedString(string: "Error loading note text.")
+        }
         if let attributedText = note.noteText.toAttributedString() {
             noteText = attributedText
         } else {
@@ -288,16 +294,24 @@ class NoteViewModel: ObservableObject {
 
     // Save or update the note
     func saveOrUpdateNote(in context: ModelContext, dismiss: @escaping () -> Void) {
+        guard let titleData = title.toData() else {
+            print("Failed to serialize attributed text.")
+            return
+        }
         guard let noteTextData = noteText.toData() else {
             print("Failed to serialize attributed text.")
             return
         }
+        let richTitleEntity = RichTextEntity(attributedTextData: titleData)
+        context.insert(richTitleEntity)
+
         let richTextEntity = RichTextEntity(attributedTextData: noteTextData)
         context.insert(richTextEntity)
 
+        
         if let note = originalNote {
             // Update existing note
-            note.title = title
+            note.title = richTitleEntity
             note.noteText = richTextEntity
             note.emoji = selectedFeeling
             note.energy = selectedEnergy
@@ -307,7 +321,7 @@ class NoteViewModel: ObservableObject {
             // Create a new note
             let newNote = NoteModel(
                 date: dateNow,
-                title: title,
+                title: richTitleEntity,
                 noteText: richTextEntity,
                 energy: selectedEnergy,
                 emoji: selectedFeeling,

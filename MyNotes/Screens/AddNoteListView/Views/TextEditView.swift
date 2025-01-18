@@ -21,6 +21,7 @@ struct TextEditView: View {
                 Button  {
 //                    dismissKeybourd()
 //                    currentView = .listBullet
+                    viewModel.actionSheetPresentation = .showKindOfList
 
                     print("list.bullet")
                 } label: {

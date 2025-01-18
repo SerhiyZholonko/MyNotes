@@ -21,15 +21,43 @@ struct EditNoteDetailCellView: View {
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
     @State private var isAddTags: Bool = false
     @State var showPhotoPicker: Bool = false
+    @State private var isNumberedList: SelectedList = .numbered
+
     @State var textEditorHeight: CGFloat = 200
+    @State private var selectedFontName: FontName? = .bold
+
 
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
             VStack {
                 HStack {
-                    TextField("Title", text: $viewModel.title)
-                        .textFieldStyle(.plain)
+//                    TextField("Title", text: $viewModel.title)
+//                        .textFieldStyle(.plain)
+                    RichTextEditor(
+                        attributedText: $viewModel.title,
+                        selectedTextColor: $viewModel.selectedTextColor,
+                        selectedRange: $viewModel.titleSelectedRange,
+                        textSize: Binding<CGFloat>(
+                            get: { viewModel.selectedFontSize.fontValue },
+                            set: { newSize in
+                                // Update the view model when the editor changes the size
+                                if let newFontSize = FontSize.allCases.first(where: { $0.fontValue == newSize }) {
+                                    viewModel.selectedFontSize = newFontSize
+                                }
+                            }
+                        ), selectedFontName: Binding<FontName?>(
+                            get: { viewModel.selectedFontName },
+                            set: { newSize in
+                                // Update the view model when the editor changes the size
+                                if let newFontSize = FontName.allCases.first(where: { $0 == newSize }) {
+                                    viewModel.selectedFontName = newFontSize
+                                }
+                            }
+                        ), selectedListStyle: .constant(.none),
+                        isEditable: true
+                    )
+                        .frame(height: 40)
                     Spacer()
                     EnergyAndFeelingView(isEditMode: $isEditMode)
                         .environmentObject(viewModel)
@@ -40,7 +68,7 @@ struct EditNoteDetailCellView: View {
                 RichTextEditor(
                     attributedText: $viewModel.noteText,
                     selectedTextColor: $viewModel.selectedTextColor,
-                    selectedRange: $viewModel.selectedRange,
+                    selectedRange: $viewModel.noteTextSelectedRange,
                     textSize: Binding<CGFloat>(
                         get: { viewModel.selectedFontSize.fontValue },
                         set: { newSize in
@@ -49,11 +77,19 @@ struct EditNoteDetailCellView: View {
                                 viewModel.selectedFontSize = newFontSize
                             }
                         }
-                    ),
+                    ),selectedFontName: Binding<FontName?>(
+                        get: { viewModel.selectedFontName },
+                        set: { newSize in
+                            // Update the view model when the editor changes the size
+                            if let newFontSize = FontName.allCases.first(where: { $0 == newSize }) {
+                                viewModel.selectedFontName = newFontSize
+                            }
+                        }
+                    ), selectedListStyle:  $isNumberedList, 
                     isEditable: true
                 )
                     .frame(height: 200)  // Set a height for the editor to be visible
-                    .border(Color.gray)
+//                    .border(Color.gray)
             }
             .textFieldStyle(.roundedBorder)
                 ScrollView(.horizontal) {
@@ -158,6 +194,8 @@ for item in viewModel.selectedCover {
                     .environmentObject(viewModel)
                     .presentationDetents([.fraction(0.5), .medium, .large])
                 
+            case .showKindOfList:
+                Text("")
             }
         }
 

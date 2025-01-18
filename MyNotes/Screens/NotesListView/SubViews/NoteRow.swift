@@ -13,7 +13,7 @@ struct NoteRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(note.title) // Replace with your actual property
+                Text(note.title.plainText) // Replace with your actual property
                     .font(.headline)
                 Spacer()
                 Text("\(note.emoji.emoji)")
