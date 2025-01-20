@@ -21,19 +21,19 @@ struct EditNoteDetailCellView: View {
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
     @State private var isAddTags: Bool = false
     @State var showPhotoPicker: Bool = false
-    @State private var isNumberedList: SelectedList = .numbered
+    @State private var isNumberedList: SelectedList = .none
 
-    @State var textEditorHeight: CGFloat = 200
     @State private var selectedFontName: FontName? = .bold
-
+    @State private var editorHeight: CGFloat = 40 // Default height
+    @State private var calculatedHeight: CGFloat = 200 // Default height
 
     var body: some View {
+        ScrollView {
         VStack(alignment: .leading) {
-            ScrollView {
             VStack {
                 HStack {
-//                    TextField("Title", text: $viewModel.title)
-//                        .textFieldStyle(.plain)
+                    //                    TextField("Title", text: $viewModel.title)
+                    //                        .textFieldStyle(.plain)
                     RichTextEditor(
                         attributedText: $viewModel.title,
                         selectedTextColor: $viewModel.selectedTextColor,
@@ -54,17 +54,19 @@ struct EditNoteDetailCellView: View {
                                     viewModel.selectedFontName = newFontSize
                                 }
                             }
-                        ), selectedListStyle: .constant(.none),
-                        isEditable: true
+                        ), selectedListStyle: .constant(.none), height: .constant(40),
+                        isEditable: true, isScrollEnabled: true
                     )
-                        .frame(height: 40)
+                    .frame( height: 40)
+                    .frame(maxWidth: .infinity)
+                    
                     Spacer()
                     EnergyAndFeelingView(isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
                 
-                    .padding(.vertical)
-
+                .padding(.vertical)
+                
                 RichTextEditor(
                     attributedText: $viewModel.noteText,
                     selectedTextColor: $viewModel.selectedTextColor,
@@ -85,75 +87,118 @@ struct EditNoteDetailCellView: View {
                                 viewModel.selectedFontName = newFontSize
                             }
                         }
-                    ), selectedListStyle:  $isNumberedList, 
-                    isEditable: true
+                    ), selectedListStyle:  $isNumberedList, height: $editorHeight,
+                    isEditable: true, isScrollEnabled: true
                 )
-                    .frame(height: 200)  // Set a height for the editor to be visible
-//                    .border(Color.gray)
+                
+                //                .frame(width: UIScreen.main.bounds.width)
+                .frame(height: calculatedHeight) // Bind dynamic height
+                .onChange(of: viewModel.noteText) { _, _ in
+                    updateHeight()
+                }
+                .onAppear {
+                    updateHeight()
+                }
+                
+                //                    .border(Color.gray)
+                .onChange(of: isNumberedList) { oldValue, newValue in
+                    // Create a mutable copy of the existing note text
+                    let mutableText = NSMutableAttributedString(attributedString: viewModel.noteText)
+                    
+                    // Define the text to append based on the selected list style
+                    let newText: String
+                    switch newValue {
+                    case .numbered:
+                        newText = "\n1. "
+                    case .simpleNumbered:
+                        newText = "\n1) "
+                    case .star:
+                        newText = "\n★ "
+                    case .point:
+                        newText = "\n● "
+                    case .heart:
+                        newText = "\n❤️ "
+                        
+                        //                        case .greenPoint:
+                        //                            newText = "\n🟢 "
+                    case .none:
+                        newText = "\n"
+                    }
+                    let attributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont(name: viewModel.selectedFontName?.fontName ?? "System", size: viewModel.selectedFontSize.fontValue) ?? UIFont.systemFont(ofSize: viewModel.selectedFontSize.fontValue),
+                        .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black) ?? UIColor.black // Use a default color if nil
+                    ]
+                    let attributedStringToAppend = NSAttributedString(string: newText, attributes: attributes)
+                    mutableText.append(attributedStringToAppend)
+                    
+                    // Update the view model's note text
+                    viewModel.noteText = mutableText
+                }
             }
-            .textFieldStyle(.roundedBorder)
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach(viewModel.selectedCoverDataList, id: \.self) { data in
-                            if let image = UIImage(data: data) {
-                                ZStack(alignment: .topTrailing) {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                      
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .frame(width: 100, height: 100)
-                                        .scaledToFill()
-                                        .cornerRadius(20)
-                                        .onLongPressGesture {
-                                            isEditingImages.toggle()
-                                        }
-                                    if isEditingImages {
-                                        Button {
-                                            if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {
-                                                viewModel.selectedCoverDataList.remove(at: index)
-                                            }
-                                        } label: {
-                                            ZStack {
-                                                // Background Circle
-                                                Color.white
-                                                    .frame(width: 30, height: 30)
-                                                    .cornerRadius(15)
-
-                                                // Trash Icon
-                                                Image(systemName: "trash.fill")
-                                                    .resizable()
-                                                    .frame(width: 24, height: 24)
-                                                    .foregroundColor(.red)
-                                                    .onTapGesture {
-                                                        handleDeleteAction(for: data)
-                                                    }
-                                            }                                                        }
-                                        .offset(x: -5, y: 70)
-                                    }
-                                }
-                            } else {
-                                Image(systemName: "photo.on.rectangle")
+            //            .textFieldStyle(.roundedBorder)
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(viewModel.selectedCoverDataList, id: \.self) { data in
+                        if let image = UIImage(data: data) {
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: image)
                                     .resizable()
+                                
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .frame(width: 100, height: 100)
                                     .scaledToFill()
                                     .cornerRadius(20)
+                                    .onLongPressGesture {
+                                        isEditingImages.toggle()
+                                    }
+                                if isEditingImages {
+                                    Button {
+                                        if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {
+                                            viewModel.selectedCoverDataList.remove(at: index)
+                                        }
+                                    } label: {
+                                        ZStack {
+                                            // Background Circle
+                                            Color.white
+                                                .frame(width: 30, height: 30)
+                                                .cornerRadius(15)
+                                            
+                                            // Trash Icon
+                                            Image(systemName: "trash.fill")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                                .foregroundColor(.red)
+                                                .onTapGesture {
+                                                    handleDeleteAction(for: data)
+                                                }
+                                        }                                                        }
+                                    .offset(x: -5, y: 70)
+                                }
                             }
+                        } else {
+                            Image(systemName: "photo.on.rectangle")
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .scaledToFill()
+                                .cornerRadius(20)
                         }
                     }
                 }
-    HStack( spacing: 8) {
-        
-        ForEach(Array(viewModel.selectedTags), id: \.id) { tag in
-            Text("#\(tag.name)")
+            }
+            HStack( spacing: 8) {
+                
+                ForEach(Array(viewModel.selectedTags), id: \.id) { tag in
+                    Text("#\(tag.name)")
+                }
+                Spacer()
+            }
+            Spacer()
+            
+                .padding()
         }
-        Spacer()
     }
-    Spacer()
-        
-    
-}
-.padding()
-}
+        .scrollIndicators(.never) // Turns off the scroll indicators
+
 VStack {
 TextEditView(showPhotoPicker: $showPhotoPicker)
     .environmentObject(viewModel)
@@ -195,8 +240,9 @@ for item in viewModel.selectedCover {
                     .presentationDetents([.fraction(0.5), .medium, .large])
                 
             case .showKindOfList:
-                Text("")
-            }
+                KindOfListView(selectedList: $isNumberedList)
+                    .environmentObject(viewModel)
+                    .presentationDetents([.fraction(0.5), .medium, .large])            }
         }
 
         .onAppear {
@@ -217,5 +263,17 @@ for item in viewModel.selectedCover {
 
         }
     }
+    private func updateHeight() {
+         let maxWidth: CGFloat = UIScreen.main.bounds.width - 40 // Adjust as needed
+         let text = viewModel.noteText.string // Convert NSAttributedString to plain string
+         let font = UIFont.systemFont(ofSize: 16) // Adjust font as used in RichTextEditor
+
+         let size = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+         let boundingBox = text.boundingRect(with: size,
+                                             options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                             attributes: [.font: font],
+                                             context: nil)
+         calculatedHeight = boundingBox.height + 20 // Add padding or set a minimum height
+     }
 }
 

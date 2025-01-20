@@ -16,7 +16,10 @@ struct RichTextEditor: UIViewRepresentable {
     @Binding var textSize: CGFloat
     @Binding var selectedFontName: FontName?
     @Binding var selectedListStyle: SelectedList
+    @Binding var height: CGFloat // New binding for height
+
     var isEditable: Bool = false
+    var isScrollEnabled: Bool = false
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -32,6 +35,15 @@ struct RichTextEditor: UIViewRepresentable {
         textView.smartQuotesType = .no
         textView.smartDashesType = .no
         textView.smartInsertDeleteType = .no
+        textView.isScrollEnabled = isScrollEnabled // Important for dynamic height
+
+        // Add width constraint
+            textView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                textView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            ])
+        textView.textContainer.lineBreakMode = .byWordWrapping
+        textView.textContainer.widthTracksTextView = true
         return textView
     }
     func formattedString() -> NSAttributedString {
@@ -63,8 +75,23 @@ struct RichTextEditor: UIViewRepresentable {
 
         // Keep the editor editable state in sync
         uiView.isEditable = isEditable
-    }
+        uiView.typingAttributes = createTypingAttributes()
 
+        // Recalculate height for pasted or updated content
+          DispatchQueue.main.async {
+              let fittingSize = CGSize(width: UIScreen.main.bounds.width, height: .greatestFiniteMagnitude)
+              let newSize = uiView.sizeThatFits(fittingSize)
+              height = max(newSize.height, 40) // Minimum height 40
+          }
+    }
+    func createTypingAttributes() -> [NSAttributedString.Key: Any] {
+           let font = UIFont(name: selectedFontName?.fontName ?? FontName.default.fontName, size: textSize)
+               ?? UIFont.systemFont(ofSize: textSize)
+           return [
+               .foregroundColor: selectedTextColor,
+               .font: font
+           ]
+       }
     // Helper function to compare attributes
     func attributesEqual(
         _ lhs: [NSAttributedString.Key: Any],
@@ -83,14 +110,6 @@ struct RichTextEditor: UIViewRepresentable {
         return true
     }
 
-    func createTypingAttributes() -> [NSAttributedString.Key: Any] {
-        let font = UIFont(name: selectedFontName?.fontName ?? FontName.default.fontName, size: textSize)
-            ?? UIFont.systemFont(ofSize: textSize)
-        return [
-            .foregroundColor: selectedTextColor,
-            .font: font
-        ]
-    }
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
@@ -118,28 +137,6 @@ struct RichTextEditor: UIViewRepresentable {
                 }
             }
         }
-//        func updateListStyleIfNeeded(uiView: UITextView) {
-//               if parent.selectedListStyle != lastAppliedStyle || uiView.text.isEmpty {
-//                   if !uiView.text.hasSuffix("\n") {
-//                       uiView.text.append("\n")
-//                   }
-//
-//                   let newListPrefix = handleListStyle(textView: uiView, for: "")
-//                   uiView.text.append(newListPrefix)
-//
-//                   // Cache the updated text and update the binding later
-//                   attributedTextCache = uiView.attributedText
-//                   DispatchQueue.main.async {
-//                       self.parent.attributedText = self.attributedTextCache ?? NSAttributedString()
-//                   }
-//
-//                   lastAppliedStyle = parent.selectedListStyle
-//
-//                   // Move cursor to the end
-//                   let endPosition = uiView.endOfDocument
-//                   uiView.selectedTextRange = uiView.textRange(from: endPosition, to: endPosition)
-//               }
-//           }
 
         func updateListStyleIfNeeded(uiView: UITextView) {
             guard parent.selectedListStyle != .none else { return }
@@ -171,34 +168,6 @@ struct RichTextEditor: UIViewRepresentable {
         }
         private var consecutiveReturns: Int = 0 // Track consecutive "Return" presses
 
-//        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//            guard parent.isEditable else { return false }
-//
-//            if text == "\n" { // Handle "Return" key
-//                let nsText = textView.text as NSString
-//                let textBeforeCursor = nsText.substring(to: range.location)
-//                let lines = textBeforeCursor.components(separatedBy: "\n")
-//                let currentLine = lines.last ?? ""
-//
-//                if parent.selectedListStyle != .none {
-//                    // Reset numbering if "Return" is pressed twice
-//                    consecutiveReturns += 1
-//                    if consecutiveReturns == 2 {
-//                        resetNumbering()
-//                        consecutiveReturns = 0
-//                        return false
-//                    }
-//
-//                    let newText = handleListStyle(textView: textView, for: currentLine)
-//                    textView.text = nsText.replacingCharacters(in: range, with: "\n\(newText)")
-//                    parent.attributedText = textView.attributedText
-//                    return false
-//                }
-//            } else {
-//                consecutiveReturns = 0 // Reset if another key is pressed
-//            }
-//            return true
-//        }
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
             guard parent.isEditable else { return false }
 
@@ -255,10 +224,6 @@ struct RichTextEditor: UIViewRepresentable {
 
             case .heart:
                 return "❤️ "
-
-            case .greenPoint:
-                return "🟢 "
-
             case .none:
                 return ""
             }
@@ -291,7 +256,7 @@ enum SelectedList: CaseIterable, Identifiable{
     case star
     case point
     case heart
-    case greenPoint
+//    case greenPoint
     case none
     var id: Self { self }
     var imageName: String {
@@ -306,10 +271,10 @@ enum SelectedList: CaseIterable, Identifiable{
             return "BlackPointList"
         case .heart:
             return "heartRedList"
-        case .greenPoint:
-            return "greenCircleList"
+//        case .greenPoint:
+//           c
         case .none:
-            return "none"
+            return "NoList"
         }
     }
     var markForList: NSAttributedString {
@@ -324,8 +289,8 @@ enum SelectedList: CaseIterable, Identifiable{
             return NSAttributedString(string: "●", attributes: [NSAttributedString.Key.font: UIFont(name: "Courier", size: 18)!])
         case .heart:
             return NSAttributedString(string: "❤️", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18)])
-        case .greenPoint:
-            return NSAttributedString(string: "🟢", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)])
+//        case .greenPoint:
+//            return NSAttributedString(string: "🟢", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)])
         case .none:
             return NSAttributedString(string: "none", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
         }

@@ -15,22 +15,30 @@ struct NoEditNoteDetailCellView: View {
     @State private var textEditerHeight: CGFloat = 200
     @State private var textSize: CGFloat = 16
     @State private var selectedFontName: FontName? = .bold
+    @State private var calculatedHeight: CGFloat = 200 // Default height
 
     @Binding var isEditMode: Bool
 
     var body: some View {
         Group {
+            ScrollView {
             VStack(alignment: .leading) {
                 HStack {
-                    RichTextEditor(attributedText: $viewModel.title, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.titleSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none))
+                    RichTextEditor(attributedText: $viewModel.title, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.titleSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none), height: .constant(40), isScrollEnabled: true)
                         .frame(height: 40)  // Set a height for the editor to be visible
                     Spacer()
                     EnergyAndFeelingView( isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
-                RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.noteTextSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none))
-                    .frame(height: 200)  // Set a height for the editor to be visible
-//                            .border(Color.gray)
+                
+                RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.noteTextSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none), height: .constant(40), isScrollEnabled: true)
+                    .frame(height: calculatedHeight)
+                    .onChange(of: viewModel.noteText) { _, _ in
+                        updateHeight()
+                    }
+                    .onAppear {
+                        updateHeight()
+                    }
                 HStack {
                     if !viewModel.tags.isEmpty {
                         Text("# ")
@@ -69,6 +77,9 @@ struct NoEditNoteDetailCellView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+            .scrollIndicators(.never) // Turns off the scroll indicators
+
+        }
         .fullScreenCover(isPresented: $isFullScreenPresented) {
             // Force unwrap the optional selectedImage
             if let selectedImage = viewModel.selectedImage {
@@ -79,6 +90,18 @@ struct NoEditNoteDetailCellView: View {
         .toolbar(.hidden, for: .tabBar) // Hides TabBar
 
     }
+    private func updateHeight() {
+          let maxWidth: CGFloat = UIScreen.main.bounds.width - 40 // Adjust as needed
+          let text = viewModel.noteText.string // Convert NSAttributedString to plain string
+          let font = UIFont.systemFont(ofSize: 16) // Adjust font as used in RichTextEditor
+
+          let size = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+          let boundingBox = text.boundingRect(with: size,
+                                              options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                              attributes: [.font: font],
+                                              context: nil)
+          calculatedHeight = boundingBox.height + 20 // Add padding or set a minimum height
+      }
 }
 
 struct FullScreenImageView: View {

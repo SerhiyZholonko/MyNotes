@@ -26,7 +26,7 @@ struct KindOfListView: View {
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .cornerRadius(10)
-                                .border(selectedList == imageName && selectedList != .none ? Color.green : Color.clear, width: 4) // Apply border
+                                .border(isSelectedList && selectedList == imageName && selectedList != .none ? Color.green : Color.clear, width: 4) // Apply border
                                 .onTapGesture {
                                     selectedList = imageName // Set selected image in viewModel
 //                                    dismiss()

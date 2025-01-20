@@ -77,7 +77,7 @@ struct NotesListView: View {
                             }
                         }
                     }
-                    
+                    .scrollIndicators(.never) // Hides the scroll indicators
                     // Placeholder view shown when no notes are available
                     if viewModel.filteredNotes.isEmpty && !viewModel.isLoading {
                         VStack {

@@ -29,6 +29,8 @@ struct AddNoteListView: View {
     @State var showPhotoPicker: Bool = false
     @Binding var tags: [TagModel]  // Use a Binding
     @State private var selectedFontName: FontName? = .bold
+    @State private var editorHeight: CGFloat = 40 // Default height
+
     enum FocusableField {
             case firstEditor, secondEditor
         }
@@ -65,7 +67,7 @@ struct AddNoteListView: View {
                                             viewModel.selectedFontName = newFontSize
                                         }
                                     }
-                                ), selectedListStyle: .constant(.none),
+                                ), selectedListStyle: .constant(.none), height: .constant(40),
                                 isEditable: true
                             )
                             .focused($focusedField, equals: .firstEditor)  // Focus state for the first editor
@@ -95,31 +97,32 @@ struct AddNoteListView: View {
                         }
                         .padding(.trailing)
                         Divider()
-                        RichTextEditor(
-                            attributedText: $viewModel.noteText,
-                            selectedTextColor: $viewModel.selectedTextColor,
-                            selectedRange: $viewModel.noteTextSelectedRange,
-                            textSize: Binding<CGFloat>(
-                                get: { viewModel.selectedFontSize.fontValue },
-                                set: { newSize in
-                                    // Update the view model when the editor changes the size
-                                    if let newFontSize = FontSize.allCases.first(where: { $0.fontValue == newSize }) {
-                                        viewModel.selectedFontSize = newFontSize
+                        ScrollView {
+                            RichTextEditor(
+                                attributedText: $viewModel.noteText,
+                                selectedTextColor: $viewModel.selectedTextColor,
+                                selectedRange: $viewModel.noteTextSelectedRange,
+                                textSize: Binding<CGFloat>(
+                                    get: { viewModel.selectedFontSize.fontValue },
+                                    set: { newSize in
+                                        if let newFontSize = FontSize.allCases.first(where: { $0.fontValue == newSize }) {
+                                            viewModel.selectedFontSize = newFontSize
+                                        }
                                     }
-                                }
-                            ), selectedFontName: Binding<FontName?>(
-                                get: { viewModel.selectedFontName },
-                                set: { newSize in
-                                    // Update the view model when the editor changes the size
-                                    if let newFontSize = FontName.allCases.first(where: { $0 == newSize }) {
-                                        viewModel.selectedFontName = newFontSize
+                                ), selectedFontName: Binding<FontName?>(
+                                    get: { viewModel.selectedFontName },
+                                    set: { newSize in
+                                        if let newFontSize = FontName.allCases.first(where: { $0 == newSize }) {
+                                            viewModel.selectedFontName = newFontSize
+                                        }
                                     }
-                                }
-                            ), selectedListStyle: $isNumberedList,
-                            isEditable: true
-                        ) 
-                        .focused($focusedField, equals: .secondEditor)  // Focus state for the second editor
-                            .frame(height: 200)  // Set a height for the editor to be visible
+                                ), selectedListStyle: $isNumberedList, height: $editorHeight,
+                                isEditable: true
+                            )
+                            .focused($focusedField, equals: .secondEditor)
+                            .frame(width: UIScreen.main.bounds.width)  // Restrict width to screen size
+                        }
+
                             .onChange(of: isNumberedList) { oldValue, newValue in
                                 // Create a mutable copy of the existing note text
                                 let mutableText = NSMutableAttributedString(attributedString: viewModel.noteText)
@@ -137,14 +140,17 @@ struct AddNoteListView: View {
                                     newText = "\n● "
                                 case .heart:
                                     newText = "\n❤️ "
-                                case .greenPoint:
-                                    newText = "\n🟢 "
+                                        
+//                                case .greenPoint:
+//                                    newText = "\n🟢 "
                                 case .none:
                                     newText = "\n"
                                 }
-
-                                // Append the new text as an NSAttributedString
-                                let attributedStringToAppend = NSAttributedString(string: newText)
+                                let attributes: [NSAttributedString.Key: Any] = [
+                                    .font: UIFont(name: viewModel.selectedFontName?.fontName ?? "System", size: viewModel.selectedFontSize.fontValue) ?? UIFont.systemFont(ofSize: viewModel.selectedFontSize.fontValue),
+                                    .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black) ?? UIColor.black // Use a default color if nil
+                                ]
+                                let attributedStringToAppend = NSAttributedString(string: newText, attributes: attributes)
                                 mutableText.append(attributedStringToAppend)
 
                                 // Update the view model's note text
@@ -216,6 +222,7 @@ struct AddNoteListView: View {
                 }
                 .padding()
             }
+            .scrollIndicators(.never) // Turns off the scroll indicators
             VStack {
                 TextEditView(showPhotoPicker: $showPhotoPicker)
                     .environmentObject(viewModel)

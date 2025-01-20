@@ -17,6 +17,7 @@ struct CalendarScreen: View {
     
     var body: some View {
         NavigationStack {
+            ScrollView {
             VStack {
                 HStack {
                     Picker("", selection: $selectedYear) {
@@ -24,7 +25,7 @@ struct CalendarScreen: View {
                             Text(String(year))
                         }
                     }
-
+                    
                     Picker("", selection: $selectedMonth) {
                         ForEach(months.indices, id: \.self) { index in
                             Text(months[index]).tag(index + 1)
@@ -33,9 +34,9 @@ struct CalendarScreen: View {
                 }
                 .padding()
                 .buttonStyle(.bordered)
-               
+                
                 CalendarView(date: monthDate, notes: notes)
-//                    .environmentObject(viewModel)
+                //                    .environmentObject(viewModel)
                     .navigationTitle("Calendar")
                     .gesture(
                         DragGesture()
@@ -53,9 +54,11 @@ struct CalendarScreen: View {
                                 }
                             }
                     )
-
+                NoteCell()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 Spacer()
             }
+        }
 //            .background(viewModel.getThemeBackgroundColor())
         }
         .onAppear {

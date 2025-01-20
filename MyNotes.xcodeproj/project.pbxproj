@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180D40AF2D3D33CB0066261A /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180D40AD2D3D33CB0066261A /* CalendarView.swift */; };
+		180D40B12D3D33E40066261A /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180D40B02D3D33E40066261A /* NoteCell.swift */; };
 		181D37062D03393D00C9626D /* ResizableTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181D37052D03393D00C9626D /* ResizableTextEditor.swift */; };
 		182899432D24102A000DB8F4 /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182899422D24102A000DB8F4 /* TextEditView.swift */; };
 		1847FABE2D26D23F008FAC12 /* FontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1847FABD2D26D23F008FAC12 /* FontView.swift */; };
 		184F02212D37D1C700C32D30 /* KindOfListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184F02202D37D1C700C32D30 /* KindOfListView.swift */; };
 		185A33762D2039B800E7648E /* CalendarScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33752D2039B800E7648E /* CalendarScreen.swift */; };
-		185A33782D203A4A00E7648E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185A33772D203A4A00E7648E /* CalendarView.swift */; };
 		186764562D16C2EF00644885 /* EnergyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186764552D16C2EF00644885 /* EnergyView.swift */; };
 		187FFA3E2CFC439A007D5995 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3D2CFC439A007D5995 /* MainTabView.swift */; };
 		187FFA402CFC43C9007D5995 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */; };
@@ -50,12 +51,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180D40AD2D3D33CB0066261A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		180D40B02D3D33E40066261A /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		181D37052D03393D00C9626D /* ResizableTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableTextEditor.swift; sourceTree = "<group>"; };
 		182899422D24102A000DB8F4 /* TextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
 		1847FABD2D26D23F008FAC12 /* FontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontView.swift; sourceTree = "<group>"; };
 		184F02202D37D1C700C32D30 /* KindOfListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindOfListView.swift; sourceTree = "<group>"; };
 		185A33752D2039B800E7648E /* CalendarScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarScreen.swift; sourceTree = "<group>"; };
-		185A33772D203A4A00E7648E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		186764552D16C2EF00644885 /* EnergyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyView.swift; sourceTree = "<group>"; };
 		187FFA3D2CFC439A007D5995 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
@@ -104,6 +106,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		180D40AE2D3D33CB0066261A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				180D40AD2D3D33CB0066261A /* CalendarView.swift */,
+				180D40B02D3D33E40066261A /* NoteCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		181D37042D03392200C9626D /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,8 +146,8 @@
 		185A33742D20399A00E7648E /* CalendarView */ = {
 			isa = PBXGroup;
 			children = (
+				180D40AE2D3D33CB0066261A /* Views */,
 				185A33752D2039B800E7648E /* CalendarScreen.swift */,
-				185A33772D203A4A00E7648E /* CalendarView.swift */,
 			);
 			path = CalendarView;
 			sourceTree = "<group>";
@@ -388,6 +399,7 @@
 				18F5CB692D16A56000149279 /* FeelingItem.swift in Sources */,
 				18ADF0602CFB148B00B1D886 /* TagsView.swift in Sources */,
 				184F02212D37D1C700C32D30 /* KindOfListView.swift in Sources */,
+				180D40AF2D3D33CB0066261A /* CalendarView.swift in Sources */,
 				186764562D16C2EF00644885 /* EnergyView.swift in Sources */,
 				18B8620F2D251EA200DC79DE /* AddTagsView.swift in Sources */,
 				1847FABE2D26D23F008FAC12 /* FontView.swift in Sources */,
@@ -402,12 +414,12 @@
 				18F5CB672D169F8C00149279 /* EmojiView.swift in Sources */,
 				18B4AB0E2D269E58006CF438 /* EnergyAndFeelingView.swift in Sources */,
 				181D37062D03393D00C9626D /* ResizableTextEditor.swift in Sources */,
+				180D40B12D3D33E40066261A /* NoteCell.swift in Sources */,
 				18ADF0762CFB3FE200B1D886 /* EditNoteDetailCellView.swift in Sources */,
 				185A33762D2039B800E7648E /* CalendarScreen.swift in Sources */,
 				18AB72972D295BCF000BCF06 /* AddEditFontView.swift in Sources */,
 				18EE3B442D0DA95F00EDBC9C /* NoteRow.swift in Sources */,
 				18ADF05E2CFB140100B1D886 /* NotesListViewModel.swift in Sources */,
-				185A33782D203A4A00E7648E /* CalendarView.swift in Sources */,
 				18F5B59D2D16DB7900867666 /* Extensions.swift in Sources */,
 				18ADF0732CFB3D0400B1D886 /* NoteDetailViewModel.swift in Sources */,
 				18ADF0692CFB175900B1D886 /* AddNoteListViewModel.swift in Sources */,
