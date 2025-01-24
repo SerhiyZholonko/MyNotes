@@ -40,9 +40,7 @@ struct CalendarView: View {
                                     Circle()
                                         .foregroundStyle(getBackgroundColor(for: day))
                                         .foregroundStyle(.red.opacity(0.1))
-
                                 )
-                            
                             // Small circle in the top-right corner
                             if let emoji = getFeelingEmoji(for: day) {
                                     Text(emoji)

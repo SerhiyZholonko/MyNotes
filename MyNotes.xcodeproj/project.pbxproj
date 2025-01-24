@@ -110,7 +110,6 @@
 			isa = PBXGroup;
 			children = (
 				180D40AD2D3D33CB0066261A /* CalendarView.swift */,
-				180D40B02D3D33E40066261A /* NoteCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -146,6 +145,7 @@
 		185A33742D20399A00E7648E /* CalendarView */ = {
 			isa = PBXGroup;
 			children = (
+				18F867FE2D3F73A900A13BD9 /* Cell */,
 				180D40AE2D3D33CB0066261A /* Views */,
 				185A33752D2039B800E7648E /* CalendarScreen.swift */,
 			);
@@ -312,6 +312,14 @@
 				184F02202D37D1C700C32D30 /* KindOfListView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		18F867FE2D3F73A900A13BD9 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				180D40B02D3D33E40066261A /* NoteCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

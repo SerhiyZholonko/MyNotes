@@ -147,7 +147,7 @@ struct NotesListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: { isFiltering.toggle() }) {
-                        Image(systemName: "arrow.up.arrow.down")
+                        Image(systemName: "slider.horizontal.3")
                             .resizable()
                             .frame(width: 40, height: 40)
                             .tint(.black)

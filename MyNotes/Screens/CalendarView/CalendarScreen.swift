@@ -18,7 +18,7 @@ struct CalendarScreen: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-            VStack {
+                VStack(alignment: .leading) {
                 HStack {
                     Picker("", selection: $selectedYear) {
                         ForEach(years, id: \.self) { year in
@@ -58,6 +58,8 @@ struct CalendarScreen: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 Spacer()
             }
+                .frame(maxWidth: .infinity)
+
         }
 //            .background(viewModel.getThemeBackgroundColor())
         }

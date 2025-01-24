@@ -23,7 +23,11 @@ extension Date {
             formatter.dateFormat = "dd.MM.yyyy"
             return formatter.string(from: self)
         }
-    
+    func toString(format: String) -> String {
+            let formatter = DateFormatter()
+            formatter.dateFormat = format
+            return formatter.string(from: self)
+        }
     func toStringNoteDetail() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"

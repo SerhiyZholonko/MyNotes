@@ -20,6 +20,7 @@ class NoteModel: Identifiable {
     @Relationship(deleteRule: .nullify, inverse: \TagModel.notes)
     var tags: [TagModel] = [] // Many-to-many relationship inferred automatically
     var coverImages: [Data] = [] // Store multiple images
+    
     init(
         date: Date = Date(), // Default to current date
         title: RichTextEntity,
