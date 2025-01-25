@@ -11,15 +11,20 @@ import SwiftUI
 struct MainTabView: View { // Renamed to CustomTabView
     @State private var isAddViewPresented = true // State for presenting AddView
     @StateObject var viewModel = MainTabViewModel()
+    @StateObject var noteViewModel = NoteViewModel()
+    @StateObject var notesListViewModel = NotesListViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
             
             TabView(selection: $viewModel.selectedTab) {
-                CalendarScreen()
-                    .tag("1")
+                CalendarScreen(isAddViewPresented: $isAddViewPresented).tag("1")
+                    .environmentObject(noteViewModel)
+                    .environmentObject(notesListViewModel)
+
                 NotesListView(isAddViewPresented: $isAddViewPresented).tag("2")
-                
+                    .environmentObject(noteViewModel)
+                    .environmentObject(notesListViewModel)
                 Text("f").tag("3")
             }
             if  isAddViewPresented {

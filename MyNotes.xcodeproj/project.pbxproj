@@ -18,6 +18,7 @@
 		187FFA3E2CFC439A007D5995 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3D2CFC439A007D5995 /* MainTabView.swift */; };
 		187FFA402CFC43C9007D5995 /* MainTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */; };
 		189CEA9D2D07657300E373DD /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189CEA9C2D07657300E373DD /* Date.swift */; };
+		189F41522D44C04B007342EA /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F41512D44C04B007342EA /* Array.swift */; };
 		18AB72952D2834AF000BCF06 /* EditFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72942D2834AF000BCF06 /* EditFontView.swift */; };
 		18AB72972D295BCF000BCF06 /* AddEditFontView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72962D295BCF000BCF06 /* AddEditFontView.swift */; };
 		18AB72992D295F9D000BCF06 /* DetailTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */; };
@@ -45,7 +46,7 @@
 		18B8620F2D251EA200DC79DE /* AddTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B8620E2D251EA200DC79DE /* AddTagsView.swift */; };
 		18EE3B442D0DA95F00EDBC9C /* NoteRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EE3B432D0DA95F00EDBC9C /* NoteRow.swift */; };
 		18F5B59B2D16DA5900867666 /* EnergyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5B59A2D16DA5900867666 /* EnergyItem.swift */; };
-		18F5B59D2D16DB7900867666 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5B59C2D16DB7900867666 /* Extensions.swift */; };
+		18F5B59D2D16DB7900867666 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5B59C2D16DB7900867666 /* Color.swift */; };
 		18F5CB672D169F8C00149279 /* EmojiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5CB662D169F8C00149279 /* EmojiView.swift */; };
 		18F5CB692D16A56000149279 /* FeelingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F5CB682D16A56000149279 /* FeelingItem.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		187FFA3D2CFC439A007D5995 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		187FFA3F2CFC43C9007D5995 /* MainTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewModel.swift; sourceTree = "<group>"; };
 		189CEA9C2D07657300E373DD /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		189F41512D44C04B007342EA /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		18AB72942D2834AF000BCF06 /* EditFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFontView.swift; sourceTree = "<group>"; };
 		18AB72962D295BCF000BCF06 /* AddEditFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditFontView.swift; sourceTree = "<group>"; };
 		18AB72982D295F9D000BCF06 /* DetailTextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextEditView.swift; sourceTree = "<group>"; };
@@ -90,7 +92,7 @@
 		18B8620E2D251EA200DC79DE /* AddTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagsView.swift; sourceTree = "<group>"; };
 		18EE3B432D0DA95F00EDBC9C /* NoteRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteRow.swift; sourceTree = "<group>"; };
 		18F5B59A2D16DA5900867666 /* EnergyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyItem.swift; sourceTree = "<group>"; };
-		18F5B59C2D16DB7900867666 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		18F5B59C2D16DB7900867666 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		18F5CB662D169F8C00149279 /* EmojiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiView.swift; sourceTree = "<group>"; };
 		18F5CB682D16A56000149279 /* FeelingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,7 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				189CEA9C2D07657300E373DD /* Date.swift */,
-				18F5B59C2D16DB7900867666 /* Extensions.swift */,
+				18F5B59C2D16DB7900867666 /* Color.swift */,
+				189F41512D44C04B007342EA /* Array.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				18ADF0502CFAF3CC00B1D886 /* ContentView.swift in Sources */,
 				18B4AB102D26BB56006CF438 /* EditEmojiView.swift in Sources */,
 				18ADF0672CFB16DB00B1D886 /* AddNoteListView.swift in Sources */,
+				189F41522D44C04B007342EA /* Array.swift in Sources */,
 				18ADF06B2CFB1A7700B1D886 /* TagsListView.swift in Sources */,
 				182899432D24102A000DB8F4 /* TextEditView.swift in Sources */,
 				18ADF0592CFAF4F200B1D886 /* NoteModel.swift in Sources */,
@@ -428,7 +432,7 @@
 				18AB72972D295BCF000BCF06 /* AddEditFontView.swift in Sources */,
 				18EE3B442D0DA95F00EDBC9C /* NoteRow.swift in Sources */,
 				18ADF05E2CFB140100B1D886 /* NotesListViewModel.swift in Sources */,
-				18F5B59D2D16DB7900867666 /* Extensions.swift in Sources */,
+				18F5B59D2D16DB7900867666 /* Color.swift in Sources */,
 				18ADF0732CFB3D0400B1D886 /* NoteDetailViewModel.swift in Sources */,
 				18ADF0692CFB175900B1D886 /* AddNoteListViewModel.swift in Sources */,
 				18AB72952D2834AF000BCF06 /* EditFontView.swift in Sources */,

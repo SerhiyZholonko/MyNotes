@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  Color.swift
 //  MyNotes
 //
 //  Created by apple on 21.12.2024.

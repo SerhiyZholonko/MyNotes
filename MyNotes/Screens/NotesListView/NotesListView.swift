@@ -14,8 +14,8 @@ import SwiftData
 struct NotesListView: View {
     @Environment(\.modelContext) private var modelContext
     @Binding var isAddViewPresented: Bool
-    @StateObject var noteViewModel = NoteViewModel()
-    @StateObject var viewModel = NotesListViewModel()
+    @EnvironmentObject var noteViewModel: NoteViewModel
+    @EnvironmentObject var viewModel: NotesListViewModel
     @State private var isShowingAddTagSheet = false
     @State private var isSearching = false
     @State private var isFiltering = false
