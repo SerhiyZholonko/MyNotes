@@ -18,14 +18,16 @@ struct MainTabView: View { // Renamed to CustomTabView
         ZStack(alignment: .bottom) {
             
             TabView(selection: $viewModel.selectedTab) {
+                //CalendarView
                 CalendarScreen(isAddViewPresented: $isAddViewPresented).tag("1")
                     .environmentObject(noteViewModel)
                     .environmentObject(notesListViewModel)
-
+                //NotesListView
                 NotesListView(isAddViewPresented: $isAddViewPresented).tag("2")
                     .environmentObject(noteViewModel)
                     .environmentObject(notesListViewModel)
-                Text("f").tag("3")
+                //SetingView
+                SettingsView().tag("3")
             }
             if  isAddViewPresented {
             HStack {
@@ -33,7 +35,8 @@ struct MainTabView: View { // Renamed to CustomTabView
                 Button {
                     viewModel.selectedTab = "1"
                 } label: {
-                    Image("time")
+                    //Image("time")
+                    Image(systemName: "calendar.circle.fill")
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 40, height: 40)
@@ -53,7 +56,8 @@ struct MainTabView: View { // Renamed to CustomTabView
                 Button {
                     viewModel.selectedTab = "2"
                 } label: {
-                    Image("note")
+//                    Image("note")
+                    Image(systemName: "list.dash.header.rectangle")
                         .renderingMode(.template)
                         .resizable()
                         .frame(width: 50, height: 50)
@@ -73,10 +77,11 @@ struct MainTabView: View { // Renamed to CustomTabView
                 Button {
                     viewModel.selectedTab = "3"
                 } label: {
-                    Image("user")
+                    //Image("user")
+                    Image(systemName: "gearshape.circle.fill")
                         .renderingMode(.template)
                         .resizable()
-                        .frame(width: 30, height: 30)
+                        .frame(width: 40, height: 40)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .simultaneousGesture(

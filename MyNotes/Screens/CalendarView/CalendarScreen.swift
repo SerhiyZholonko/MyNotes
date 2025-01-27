@@ -44,23 +44,9 @@ struct CalendarScreen: View {
                         }
                     }
                     .padding()
-                    .buttonStyle(.bordered)
-
-                    CalendarView(date: monthDate, notes: notes, selectedDay: $selectedDay) // Pass binding
-//                        .gesture(
-//                            DragGesture()
-//                                .onEnded { value in
-//                                    if value.translation.width < 0 {
-//                                        withAnimation {
-//                                            moveToNextMonth()
-//                                        }
-//                                    } else if value.translation.width > 0 {
-//                                        withAnimation {
-//                                            moveToPreviousMonth()
-//                                        }
-//                                    }
-//                                }
-//                        )
+                    .buttonStyle(.bordered)                        
+                        CalendarView(date: monthDate, notes: notes, selectedDay: $selectedDay) // Pass binding
+                    
                     NavigationLink {
                         if let note = notes.note(for: selectedDay) {
                             NoteDetailView {
@@ -75,14 +61,17 @@ struct CalendarScreen: View {
                             }
                         }
                     } label: {
-                        NoteCell(
-                            selectedDay: Binding(
-                                get: { selectedDay ?? monthDate },
-                                set: { self.selectedDay = $0 }
-                            ),
-                            notes: notes
-                        )
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        Section {
+                            NoteCell(
+                                selectedDay: Binding(
+                                    get: { selectedDay ?? monthDate },
+                                    set: { self.selectedDay = $0 }
+                                ),
+                                notes: notes
+                            )
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                       
                     }
                     .disabled(notes.note(for: selectedDay) == nil)
 
@@ -91,6 +80,7 @@ struct CalendarScreen: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
+                
             }
             .onAppear {
                 withAnimation {
@@ -98,6 +88,7 @@ struct CalendarScreen: View {
                 }
             }
             .navigationTitle("Calendar")
+            .background(Color(UIColor.secondarySystemBackground))
         }
         .onAppear {
             years = Array(Set(notes.map { $0.date.yearInt }.sorted()))

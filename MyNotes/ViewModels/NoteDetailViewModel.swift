@@ -169,7 +169,7 @@ class NoteViewModel: ObservableObject {
     }
     @Published var title = NSAttributedString(string: "")
     @Published var noteText = NSAttributedString(string: "")
-    @Published var selectedTextColor: UIColor = .black
+    @Published var selectedTextColor: UIColor = .label
     @Published var noteTextSelectedRange: NSRange = NSRange(location: 0, length: 0)
     @Published var titleSelectedRange: NSRange = NSRange(location: 0, length: 0)
     @Published var selectedFontName: FontName? = .default

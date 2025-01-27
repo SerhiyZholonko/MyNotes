@@ -14,7 +14,6 @@ import SwiftData
 
 
 struct NoteDetailView: View {
-//    @Binding var isAddViewPresented: Bool
     @State var isEditMode: Bool = false
     @EnvironmentObject var viewModel: NoteViewModel  // Correct ObservedObject usage
     @Environment(\.modelContext) private var modelContext  // Access the ModelContext

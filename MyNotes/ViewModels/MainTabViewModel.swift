@@ -8,7 +8,7 @@
 import Foundation
 
 class MainTabViewModel: ObservableObject {
-    @Published var selectedTab = "2"
+    @Published var selectedTab = "3"
 
     @Published var isPressed1 = false // State for the first button
     @Published var isPressed2 = false // State for the second button

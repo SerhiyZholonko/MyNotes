@@ -167,9 +167,11 @@ struct NotesListView: View {
                             noteViewModel.setup(note: nil, allTags: [])
                         }
                     } label: {
-                        Image("notes")
+                        Image(systemName: "applepencil.and.scribble")
                             .resizable()
                             .frame(width: 40, height: 40)
+                            .foregroundStyle(Color(UIColor.label))
+
                     }
 
 

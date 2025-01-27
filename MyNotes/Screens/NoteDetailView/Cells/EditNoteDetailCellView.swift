@@ -32,8 +32,6 @@ struct EditNoteDetailCellView: View {
         VStack(alignment: .leading) {
             VStack {
                 HStack {
-                    //                    TextField("Title", text: $viewModel.title)
-                    //                        .textFieldStyle(.plain)
                     RichTextEditor(
                         attributedText: $viewModel.title,
                         selectedTextColor: $viewModel.selectedTextColor,

@@ -24,7 +24,7 @@ struct NoteCell: View {
                 Text(note.title.plainText) // Use the plain text of the title
                 Text(note.noteText.plainText) // Use the plain text of the noteText
             } else {
-                VStack {
+                VStack(alignment: .center){
                     Image(systemName: "square.and.pencil") // Add a relevant SF Symbol
                         .resizable()
                         .scaledToFit()
@@ -38,9 +38,12 @@ struct NoteCell: View {
                         .multilineTextAlignment(.center)
                     
                 }
-                .padding()            }
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .foregroundStyle(Color(UIColor.label))
     }
 }

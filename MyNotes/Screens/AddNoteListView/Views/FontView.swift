@@ -72,7 +72,7 @@ enum FontColor: CaseIterable, Identifiable {
     
     var color: Color {
         switch self {
-        case .primary: return .black
+        case .primary: return Color(UIColor.label)
         case .secondary: return .gray
         case .accent: return .blue
         case .warning: return .red
