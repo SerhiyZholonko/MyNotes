@@ -28,6 +28,7 @@ struct TextEditView: View {
                     Image(systemName: "list.bullet")
                         .resizable()
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(Color(uiColor: .label))
                         .padding(.horizontal, 6)
                 }
                 Button  {
@@ -39,6 +40,7 @@ struct TextEditView: View {
                     Image(systemName: "textformat.size")
                         .resizable()
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(Color(uiColor: .label))
                         .padding(.horizontal, 6)
                 }
                 Button  {
@@ -49,6 +51,7 @@ struct TextEditView: View {
                     Image(systemName: "tag")
                         .resizable()
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(Color(uiColor: .label))
                         .padding(.horizontal, 6)
                 }
                 Button  {
@@ -59,6 +62,7 @@ struct TextEditView: View {
                     Image(systemName: "photo.on.rectangle.angled")
                         .resizable()
                         .frame(width: 24, height: 24)
+                        .foregroundStyle(Color(uiColor: .label))
                         .padding(.horizontal, 6)
                 }
             }

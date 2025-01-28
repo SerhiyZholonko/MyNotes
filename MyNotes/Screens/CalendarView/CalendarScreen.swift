@@ -69,9 +69,10 @@ struct CalendarScreen: View {
                                 ),
                                 notes: notes
                             )
+                            .environmentObject(noteViewModel)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            
                         }
-                       
                     }
                     .disabled(notes.note(for: selectedDay) == nil)
 

@@ -140,15 +140,12 @@ struct AddNoteListView: View {
                                     newText = "\n● "
                                 case .heart:
                                     newText = "\n❤️ "
-                                        
-//                                case .greenPoint:
-//                                    newText = "\n🟢 "
                                 case .none:
                                     newText = "\n"
                                 }
                                 let attributes: [NSAttributedString.Key: Any] = [
                                     .font: UIFont(name: viewModel.selectedFontName?.fontName ?? "System", size: viewModel.selectedFontSize.fontValue) ?? UIFont.systemFont(ofSize: viewModel.selectedFontSize.fontValue),
-                                    .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black) ?? UIColor.black // Use a default color if nil
+                                    .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black)
                                 ]
                                 let attributedStringToAppend = NSAttributedString(string: newText, attributes: attributes)
                                 mutableText.append(attributedStringToAppend)
@@ -210,7 +207,6 @@ struct AddNoteListView: View {
                                     }
                                 }
                     HStack( spacing: 8) {
-                        
                         ForEach(Array(viewModel.selectedTags), id: \.id) { tag in
                             Text("#\(tag.name)")
                         }
@@ -240,6 +236,7 @@ struct AddNoteListView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden()
 
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -253,6 +250,15 @@ struct AddNoteListView: View {
                         Text("Save")
                     }
                 }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.bold)
+                    }
+                }
+                
             }
             .sheet(item: $viewModel.actionSheetPresentation) { item in
                 // Switch to handle different views
@@ -309,8 +315,9 @@ struct AddNoteListView: View {
                 isAddViewPresented = false// show tapbar
                 focusedField = .firstEditor  // Focus the first editor when the view appears
             }
+            .tint(Color(uiColor: .label))
+            .toolbar(.hidden, for: .tabBar)
         }
-        .toolbar(.hidden, for: .tabBar) // Hides TabBar
     }
     private func handleDeleteAction(for data: Data) {
         if let index = viewModel.selectedCoverDataList.firstIndex(of: data) {

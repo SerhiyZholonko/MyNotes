@@ -18,7 +18,7 @@ class AddNoteListViewModel: ObservableObject {
     @Published var title = NSAttributedString(string: "")
     
     @Published var noteText = NSAttributedString(string: "Write and change text color.")
-    @Published var selectedTextColor: UIColor = .black
+    @Published var selectedTextColor: UIColor = .label
    
     @Published var selectedRange: NSRange = NSRange(location: 0, length: 0)
     

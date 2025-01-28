@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import LocalAuthentication
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext  // Access modelContext
@@ -37,6 +38,28 @@ struct ContentView: View {
         } catch {
             print("Error finding application support directory: \(error)")
             return nil
+        }
+    }
+    func authenticateUser() {
+        let context = LAContext()
+        var error: NSError?
+
+        // Check if the device supports Face ID
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Authenticate to proceed") { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        // Authentication successful
+                        print("Authenticated successfully")
+                    } else {
+                        // Authentication failed
+                        print("Authentication failed: \(authenticationError?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            }
+        } else {
+            // Device doesn't support Face ID
+            print("Face ID is not available on this device.")
         }
     }
 }

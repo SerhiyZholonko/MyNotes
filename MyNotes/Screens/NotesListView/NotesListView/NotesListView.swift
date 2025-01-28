@@ -96,10 +96,7 @@ struct NotesListView: View {
                 .navigationDestination(item: $viewModel.selectedNote) { note in
                     NoteDetailView(){
                         viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
-                       
                     }
-                    
-
                     .environmentObject(noteViewModel)
                     .onAppear {
                         noteViewModel.originalNote = note
@@ -150,7 +147,7 @@ struct NotesListView: View {
                         Image(systemName: "slider.horizontal.3")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .tint(.black)
+                            .tint(Color(UIColor.label))
                     }
                 }
             }

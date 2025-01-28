@@ -12,10 +12,12 @@ struct CalendarView: View {
     let notes: [NoteModel]
     let daysOfWeek = Date.capitalizedFirstLettersOfWeekdays
     let columns = Array(repeating: GridItem(.flexible()), count: 7)
+
     @State private var days: [Date] = []
     @Binding var selectedDay: Date? // Use binding for selectedDay
 
     var body: some View {
+//        Section(header: Text("Calendar")) {
         VStack {
             HStack {
                 ForEach(daysOfWeek.indices, id: \.self) { index in
@@ -57,6 +59,11 @@ struct CalendarView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(uiColor: .systemBackground))
+        .cornerRadius(10)
+
+//    }
+        .padding()
         .onAppear {
             days = date.calendarDisplayDays
         }

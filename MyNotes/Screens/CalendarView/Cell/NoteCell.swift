@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NoteCell: View {
+    @EnvironmentObject var noteViewModel: NoteViewModel
     @Binding var selectedDay: Date? // Change to optional
     var notes: [NoteModel]
     var body: some View {
@@ -21,6 +22,8 @@ struct NoteCell: View {
                         Text(note.date.toString(format: "MMMM, yyyy"))
                     }
                 }
+//                RichTextEditor(attributedText: note.title.plainText, selectedTextColor: $noteViewModel.selectedTextColor, selectedRange: $noteViewModel.noteTextSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none), height: .constant(40), isScrollEnabled: true)
+
                 Text(note.title.plainText) // Use the plain text of the title
                 Text(note.noteText.plainText) // Use the plain text of the noteText
             } else {
@@ -42,8 +45,13 @@ struct NoteCell: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .padding(.horizontal)
+        .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
         .foregroundStyle(Color(UIColor.label))
+        
+        .background(Color(uiColor: .systemBackground))
+    
+        .cornerRadius(10)
+        .padding()
     }
 }

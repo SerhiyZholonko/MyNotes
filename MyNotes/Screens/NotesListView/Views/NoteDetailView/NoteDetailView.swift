@@ -59,5 +59,6 @@ struct NoteDetailView: View {
                 }
             }
         }
+        .tint(Color(uiColor: .label))
     }
 }
