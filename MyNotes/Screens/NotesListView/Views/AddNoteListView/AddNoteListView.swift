@@ -97,6 +97,8 @@ struct AddNoteListView: View {
                         }
                         .padding(.trailing)
                         Divider()
+                            .frame(height: 2) // Set height
+                            .background(Color(uiColor: .label)) // Set color
                         ScrollView {
                             RichTextEditor(
                                 attributedText: $viewModel.noteText,
@@ -317,6 +319,8 @@ struct AddNoteListView: View {
             }
             .tint(Color(uiColor: .label))
             .toolbar(.hidden, for: .tabBar)
+            .navigationTitle("Add Note")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     private func handleDeleteAction(for data: Data) {

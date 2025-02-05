@@ -29,6 +29,7 @@ struct MainTabView: View { // Renamed to CustomTabView
                 //SetingView
                 SettingsView().tag("3")
             }
+            .background(Color.white.edgesIgnoringSafeArea(.all)) // Forces tab bar background
             if  isAddViewPresented {
             HStack {
                 // First Button
@@ -93,6 +94,8 @@ struct MainTabView: View { // Renamed to CustomTabView
                 .animation(.easeInOut(duration: 0.2), value: viewModel.isPressed3)
             }
             .padding()
+            .frame(height: 40) // Adjust this value to control the height
+
             .frame(maxWidth: .infinity)
         }
 

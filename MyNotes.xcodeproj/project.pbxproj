@@ -96,6 +96,7 @@
 		18BFE8B52D48CEB600F8B636 /* EditFontView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFontView.swift; sourceTree = "<group>"; };
 		18BFE8B62D48CEB600F8B636 /* EnergyAndFeelingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyAndFeelingView.swift; sourceTree = "<group>"; };
 		18BFE8B82D48CEB600F8B636 /* NoteDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDetailView.swift; sourceTree = "<group>"; };
+		18F415E22D4FC42400F20FCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		18F5B59A2D16DA5900867666 /* EnergyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyItem.swift; sourceTree = "<group>"; };
 		18F5B59C2D16DB7900867666 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		18F5CB682D16A56000149279 /* FeelingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingItem.swift; sourceTree = "<group>"; };
@@ -208,6 +209,7 @@
 		18ADF04F2CFAF3CC00B1D886 /* MyNotes */ = {
 			isa = PBXGroup;
 			children = (
+				18F415E22D4FC42400F20FCD /* Info.plist */,
 				189CEA9B2D07655500E373DD /* Extensions */,
 				18ADF04B2CFAF3CC00B1D886 /* Preview Content */,
 				18ADF04C2CFAF3CC00B1D886 /* Assets.xcassets */,
@@ -611,9 +613,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyNotes/Preview Content\"";
-				DEVELOPMENT_TEAM = 4BBUSC332Y;
+				DEVELOPMENT_TEAM = 3W66P7KFYL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyNotes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -640,9 +643,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyNotes/Preview Content\"";
-				DEVELOPMENT_TEAM = 4BBUSC332Y;
+				DEVELOPMENT_TEAM = 3W66P7KFYL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyNotes/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

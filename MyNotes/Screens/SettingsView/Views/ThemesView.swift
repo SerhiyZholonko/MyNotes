@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct ThemesView: View {
+    @Environment(\.dismiss) private var dismiss
+
     let themes: [Theme] = [
         Theme(name: "Winter", background: "WinterBackground", accentColor: .blue),
         Theme(name: "Autumn", background: "AutumnBackground", accentColor: .orange),
@@ -17,11 +17,9 @@ struct ThemesView: View {
     ]
     
     var body: some View {
-        NavigationView {
+//        NavigationView {
             VStack {
-//                Text("Themes")
-//                    .font(.largeTitle)
-//                    .bold()
+
                 
                 TabView {
                     ForEach(themes) { theme in
@@ -46,7 +44,22 @@ struct ThemesView: View {
                 .padding(.top, 20)
             }
             .navigationTitle("Themes")
-        }
+        
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
+        
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color(uiColor: .label))
+                    }
+                }
+            }
+//        }
     }
 }
 

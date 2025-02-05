@@ -89,6 +89,7 @@ struct CalendarScreen: View {
                 }
             }
             .navigationTitle("Calendar")
+            .navigationBarTitleDisplayMode(.inline)
             .background(Color(UIColor.secondarySystemBackground))
         }
         .onAppear {

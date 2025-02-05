@@ -30,6 +30,9 @@ struct NoEditNoteDetailCellView: View {
                     EnergyAndFeelingView( isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
+                Divider()
+                    .frame(height: 2)
+                    .background(Color(uiColor: .label))
                 
                 RichTextEditor(attributedText: $viewModel.noteText, selectedTextColor: $viewModel.selectedTextColor, selectedRange: $viewModel.noteTextSelectedRange, textSize: $textSize, selectedFontName: $selectedFontName, selectedListStyle: .constant(.none), height: .constant(40), isScrollEnabled: true)
                     .frame(height: calculatedHeight)

@@ -19,6 +19,7 @@ struct NotesListView: View {
     @State private var isShowingAddTagSheet = false
     @State private var isSearching = false
     @State private var isFiltering = false
+   
     var body: some View {
         NavigationStack {
             VStack {
@@ -45,6 +46,8 @@ struct NotesListView: View {
                 
                 ZStack {
                     // List of notes
+                   
+                       
                     List {
                         ForEach(viewModel.filteredNotes) { note in
                             HStack {
@@ -79,6 +82,15 @@ struct NotesListView: View {
                     }
                     .scrollIndicators(.never) // Hides the scroll indicators
                     // Placeholder view shown when no notes are available
+                    .scrollContentBackground(.hidden) // Removes default List background
+
+                    .background(
+                        Image("AutumnBackground")
+                               .resizable()
+                               .scaledToFill()
+                               .ignoresSafeArea()
+                    ) // Makes the background transparent
+                    
                     if viewModel.filteredNotes.isEmpty && !viewModel.isLoading {
                         VStack {
                             Image(systemName: "note.text")
@@ -93,6 +105,7 @@ struct NotesListView: View {
                     }
                 }
                 .navigationTitle("Notes List")
+                
                 .navigationDestination(item: $viewModel.selectedNote) { note in
                     NoteDetailView(){
                         viewModel.fetchNotes(offset: 0, reset: true, modelContext: modelContext)
@@ -106,7 +119,7 @@ struct NotesListView: View {
                     }
                 }
 
-                .listStyle(PlainListStyle())
+//                .listStyle(PlainListStyle())
                 .onAppear {
                     if viewModel.notes.isEmpty {
                         viewModel.fetchNotes(offset: 0, modelContext: modelContext)
@@ -141,6 +154,8 @@ struct NotesListView: View {
                 }
                 .presentationDetents([.fraction(0.3), .medium, .large])
             })
+            .navigationBarTitleDisplayMode(.inline) // Set title style (inline or large)
+
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: { isFiltering.toggle() }) {
@@ -175,11 +190,51 @@ struct NotesListView: View {
                 }
             }
             .toolbar(.visible, for: .tabBar)
+        
 
         }
         .onAppear {
             viewModel.fetchTags(modelContext: modelContext)
             viewModel.fetchNotes(offset: 0, modelContext: modelContext)
+//            setupAppearance()
         }
     }
+//    private func setupAppearance() {
+//        let navAppearance = UINavigationBarAppearance()
+//        navAppearance.configureWithOpaqueBackground()
+//        navAppearance.backgroundColor = UIColor.white
+//        navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+//        
+//        UINavigationBar.appearance().standardAppearance = navAppearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+//        let tabAppearance = UITabBarAppearance()
+//        tabAppearance.configureWithOpaqueBackground()
+//        tabAppearance.backgroundColor = UIColor.white
+//
+//        UITabBar.appearance().standardAppearance = tabAppearance
+//        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+//        UITabBar.appearance().isTranslucent = false  // 🔥 This prevents transparency
+//    }
+//    private func setupAppearance() {
+//        let navAppearance = UINavigationBarAppearance()
+//        navAppearance.configureWithOpaqueBackground()
+//        navAppearance.backgroundColor = UIColor.blue
+//        navAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+//        
+//        UINavigationBar.appearance().standardAppearance = navAppearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+//
+//        let tabAppearance = UITabBarAppearance()
+//        tabAppearance.configureWithOpaqueBackground()
+//        tabAppearance.backgroundColor = UIColor.black
+//
+//        UITabBar.appearance().standardAppearance = tabAppearance
+//        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+//        UITabBar.appearance().isTranslucent = false  // 🔥 Fully disables transparency
+//        
+//        // Explicitly set scroll edge appearance to standard (fixes fading issue)
+//        if #available(iOS 15.0, *) {
+//            UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+//        }
+//    }
 }

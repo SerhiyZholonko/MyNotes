@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var isPasswordEnabled: Bool = UserDefaults.standard.bool(forKey: "isPasswordEnabled") // Load saved state
+    @State private var isFaceId: Bool = UserDefaults.standard.bool(forKey: "isFaceId") // Load saved state
     @State private var showPasswordSheet = false
     @State private var showRemovePrompt = false // Bind to display the alert
-
+//    @State private var password: String = ""
+    @State private var clearDataAlertIsPresented: Bool = false
     var body: some View {
         NavigationView {
             List {
@@ -20,26 +21,43 @@ struct SettingsView: View {
                     Button("Clear All Data") {
                         // Action for clearing data
                     }
-                    Toggle("Enable Password", isOn: $isPasswordEnabled)
-                        .onChange(of: isPasswordEnabled) { newValue in
+                    .onTapGesture {
+                        clearDataAlertIsPresented = true
+                    }
+                    .alert(isPresented: $clearDataAlertIsPresented) {
+                        Alert(
+                            title: Text("Clear all data"),
+                            message: Text("Are you sure you want to remove all data?"),
+                            primaryButton: .destructive(Text("Remove")) {
+                               //remove data here 
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
+                    Toggle(isOn: $isFaceId) {
+                        Label("FaceId", systemImage: "faceid")
+                    }
+                        .onChange(of: isFaceId) { _, newValue in
                             if newValue {
-                                showPasswordSheet = true // Show password setup sheet
+                                UserDefaults.standard.set(true, forKey: "isFaceId")
+
                             } else {
-                                showRemovePrompt = true // Show remove password confirmation
+                                UserDefaults.standard.set(false, forKey: "isFaceId")
+
                             }
                         }
-                        .alert(isPresented: $showRemovePrompt) { // Attach the alert here
-                            Alert(
-                                title: Text("Remove Password"),
-                                message: Text("Are you sure you want to disable the password?"),
-                                primaryButton: .destructive(Text("Remove")) {
-                                    removePassword() // Clear password
-                                },
-                                secondaryButton: .cancel {
-                                    isPasswordEnabled = true // Revert toggle
-                                }
-                            )
-                        }
+//                        .alert(isPresented: $showRemovePrompt) { // Attach the alert here
+//                            Alert(
+//                                title: Text("Remove Password"),
+//                                message: Text("Are you sure you want to disable the password?"),
+//                                primaryButton: .destructive(Text("Remove")) {
+//                                    removePassword() // Clear password
+//                                },
+//                                secondaryButton: .cancel {
+//                                    isPasswordEnabled = true // Revert toggle
+//                                }
+//                            )
+//                        }
                     
                     NavigationLink("Themes") {
                         ThemesView()
@@ -63,9 +81,10 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
             .listStyle(InsetGroupedListStyle())
-            .sheet(isPresented: $showPasswordSheet) {
-                PasswordSetupSheet(isPasswordEnabled: $isPasswordEnabled)
-            }
+//            .sheet(isPresented: $showPasswordSheet) {
+//                PasswordSetupSheet(isPasswordEnabled: $isPasswordEnabled)
+//            }
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     
@@ -77,49 +96,49 @@ struct SettingsView: View {
 }
 
 // MARK: - Password Setup Sheet
-struct PasswordSetupSheet: View {
-    @Binding var isPasswordEnabled: Bool
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @Environment(\.presentationMode) var presentationMode
-
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Set Your Password")) {
-                    SecureField("Enter Password", text: $password)
-                    SecureField("Confirm Password", text: $confirmPassword)
-                }
-            }
-            .navigationTitle("Set Password")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        isPasswordEnabled = false // Revert toggle
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        if password == confirmPassword && !password.isEmpty {
-                            savePassword(password)
-                            presentationMode.wrappedValue.dismiss()
-                        } else {
-                            // Handle mismatch or empty passwords
-                            isPasswordEnabled = false // Revert toggle
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Save Password
-    func savePassword(_ password: String) {
-        KeychainHelper.savePassword(password) // Save to Keychain
-        UserDefaults.standard.set(true, forKey: "isPasswordEnabled")
-    }
-}
+//struct PasswordSetupSheet: View {
+//    @Binding var isPasswordEnabled: Bool
+//    @State private var password: String = ""
+//    @State private var confirmPassword: String = ""
+//    @Environment(\.presentationMode) var presentationMode
+//
+//    var body: some View {
+//        NavigationView {
+//            Form {
+//                Section(header: Text("Set Your Password")) {
+//                    SecureField("Enter Password", text: $password)
+//                    SecureField("Confirm Password", text: $confirmPassword)
+//                }
+//            }
+//            .navigationTitle("Set Password")
+//            .toolbar {
+//                ToolbarItem(placement: .cancellationAction) {
+//                    Button("Cancel") {
+//                        isPasswordEnabled = false // Revert toggle
+//                        presentationMode.wrappedValue.dismiss()
+//                    }
+//                }
+//                ToolbarItem(placement: .confirmationAction) {
+//                    Button("Save") {
+//                        if password == confirmPassword && !password.isEmpty {
+//                            savePassword(password)
+//                            presentationMode.wrappedValue.dismiss()
+//                        } else {
+//                            // Handle mismatch or empty passwords
+//                            isPasswordEnabled = false // Revert toggle
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    // MARK: - Save Password
+//    func savePassword(_ password: String) {
+//        KeychainHelper.savePassword(password) // Save to Keychain
+//        UserDefaults.standard.set(true, forKey: "isPasswordEnabled")
+//    }
+//}
 
 // MARK: - SecureFieldAlert
 struct SecureFieldAlert {

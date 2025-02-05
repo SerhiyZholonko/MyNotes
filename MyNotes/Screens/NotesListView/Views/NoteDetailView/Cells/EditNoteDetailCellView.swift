@@ -26,6 +26,8 @@ struct EditNoteDetailCellView: View {
     @State private var selectedFontName: FontName? = .bold
     @State private var editorHeight: CGFloat = 40 // Default height
     @State private var calculatedHeight: CGFloat = 200 // Default height
+    
+   
 
     var body: some View {
         ScrollView {
@@ -55,15 +57,16 @@ struct EditNoteDetailCellView: View {
                         ), selectedListStyle: .constant(.none), height: .constant(40),
                         isEditable: true, isScrollEnabled: true
                     )
-                    .frame( height: 40)
+                    .frame( height: 30)
                     .frame(maxWidth: .infinity)
                     
                     Spacer()
                     EnergyAndFeelingView(isEditMode: $isEditMode)
                         .environmentObject(viewModel)
                 }
-                
-                .padding(.vertical)
+                Divider()
+                    .frame(height: 2)
+                    .background(Color(uiColor: .label))
                 
                 RichTextEditor(
                     attributedText: $viewModel.noteText,
@@ -124,7 +127,7 @@ struct EditNoteDetailCellView: View {
                     }
                     let attributes: [NSAttributedString.Key: Any] = [
                         .font: UIFont(name: viewModel.selectedFontName?.fontName ?? "System", size: viewModel.selectedFontSize.fontValue) ?? UIFont.systemFont(ofSize: viewModel.selectedFontSize.fontValue),
-                        .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black) ?? UIColor.black // Use a default color if nil
+                        .foregroundColor: UIColor(viewModel.selectedFontColor?.color ?? .black)
                     ]
                     let attributedStringToAppend = NSAttributedString(string: newText, attributes: attributes)
                     mutableText.append(attributedStringToAppend)
@@ -182,6 +185,9 @@ struct EditNoteDetailCellView: View {
                         }
                     }
                 }
+                .onAppear {
+                    viewModel.selectedCoverDataList = viewModel.imagesData
+                }
             }
             HStack( spacing: 8) {
                 
@@ -221,7 +227,7 @@ for item in viewModel.selectedCover {
             case .feeling:
                 EditEnergyView(actionSheetPresentation: $viewModel.actionSheetPresentation)
                     .environmentObject(viewModel)
-//                    .presentationDetents([.medium])
+                    .presentationDetents([.medium])
             case .smile:
                 EditEmojiView(actionSheetPresentation: $viewModel.actionSheetPresentation)
                     .environmentObject(viewModel)

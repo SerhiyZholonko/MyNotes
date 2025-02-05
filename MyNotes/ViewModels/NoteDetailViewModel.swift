@@ -316,7 +316,7 @@ class NoteViewModel: ObservableObject {
             note.emoji = selectedFeeling
             note.energy = selectedEnergy
             note.tags = Array(selectedTags)
-            note.coverImages = imagesData
+            note.coverImages = selectedCoverDataList
         } else {
             // Create a new note
             let newNote = NoteModel(
@@ -330,7 +330,6 @@ class NoteViewModel: ObservableObject {
             )
             context.insert(newNote)
         }
-
         // Save context
         do {
             try context.save()
@@ -348,7 +347,6 @@ class NoteViewModel: ObservableObject {
         guard !newTag.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         let tag = TagModel(name: newTag)
         context.insert(tag)
-
         do {
             try context.save()
             newTag = ""
