@@ -15,6 +15,8 @@ import PhotosUI
 
 struct AddNoteListView: View {
     @EnvironmentObject private var viewModel: NoteViewModel
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     @State private var selectedCoverData: [Data] = []
     @State private var isEditingImages: Bool = false  // Track if edit mode is active for images
     @Binding var isAddViewPresented: Bool
@@ -244,12 +246,23 @@ struct AddNoteListView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
 
-                        viewModel.saveOrUpdateNote(in: context) {
-                            fetchNote()
-                            dismiss()
+                        viewModel.saveOrUpdateNote(in: context) { result in
+                            switch result {
+                            case .success:
+                                fetchNote()
+                                dismiss()
+                            case .failure(let error):
+                                alertMessage = error.localizedDescription
+                                                        showAlert = true
+                            }
+                           
                         }
                     }) {
                         Text("Save")
+                    }.alert("Error", isPresented: $showAlert) {
+                        Button("OK", role: .cancel) {}
+                    } message: {
+                        Text(alertMessage)
                     }
                 }
                 ToolbarItem(placement: .navigationBarLeading) {

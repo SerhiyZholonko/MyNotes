@@ -15,6 +15,8 @@ import SwiftData
 
 struct NoteDetailView: View {
     @State var isEditMode: Bool = false
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     @EnvironmentObject var viewModel: NoteViewModel  // Correct ObservedObject usage
     @Environment(\.modelContext) private var modelContext  // Access the ModelContext
     @Environment(\.dismiss) private var dismiss
@@ -38,16 +40,28 @@ struct NoteDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     if isEditMode {
-                        viewModel.saveOrUpdateNote(in: modelContext) {
-                            updateNoteList?()
-                            isEditMode.toggle()
-                            dismiss()
+                        viewModel.saveOrUpdateNote(in: modelContext) { result in
+                            switch result {
+                            case .success:
+                                updateNoteList?()
+                                isEditMode.toggle()
+                                dismiss()
+                            case .failure(let error):
+                                alertMessage = error.localizedDescription
+                                                        showAlert = true
+                            }
+                            
                         }
                     } else {
                         isEditMode.toggle()
                     }
                 } label: {
                     Image(systemName: isEditMode ? "checkmark" : "square.and.pencil")
+                }
+                .alert("Error", isPresented: $showAlert) {
+                    Button("OK", role: .cancel) {}
+                } message: {
+                    Text(alertMessage)
                 }
             }
             ToolbarItem(placement: .navigationBarLeading) {

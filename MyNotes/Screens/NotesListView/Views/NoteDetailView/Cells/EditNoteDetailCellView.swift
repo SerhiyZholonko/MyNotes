@@ -26,9 +26,6 @@ struct EditNoteDetailCellView: View {
     @State private var selectedFontName: FontName? = .bold
     @State private var editorHeight: CGFloat = 40 // Default height
     @State private var calculatedHeight: CGFloat = 200 // Default height
-    
-   
-
     var body: some View {
         ScrollView {
         VStack(alignment: .leading) {
@@ -92,7 +89,6 @@ struct EditNoteDetailCellView: View {
                     isEditable: true, isScrollEnabled: true
                 )
                 
-                //                .frame(width: UIScreen.main.bounds.width)
                 .frame(height: calculatedHeight) // Bind dynamic height
                 .onChange(of: viewModel.noteText) { _, _ in
                     updateHeight()
@@ -101,7 +97,6 @@ struct EditNoteDetailCellView: View {
                     updateHeight()
                 }
                 
-                //                    .border(Color.gray)
                 .onChange(of: isNumberedList) { oldValue, newValue in
                     // Create a mutable copy of the existing note text
                     let mutableText = NSMutableAttributedString(attributedString: viewModel.noteText)
@@ -119,9 +114,7 @@ struct EditNoteDetailCellView: View {
                         newText = "\n● "
                     case .heart:
                         newText = "\n❤️ "
-                        
-                        //                        case .greenPoint:
-                        //                            newText = "\n🟢 "
+                     
                     case .none:
                         newText = "\n"
                     }
@@ -136,7 +129,6 @@ struct EditNoteDetailCellView: View {
                     viewModel.noteText = mutableText
                 }
             }
-            //            .textFieldStyle(.roundedBorder)
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(viewModel.selectedCoverDataList, id: \.self) { data in
@@ -187,7 +179,9 @@ struct EditNoteDetailCellView: View {
                 }
                 .onAppear {
                     viewModel.selectedCoverDataList = viewModel.imagesData
+                    
                 }
+               
             }
             HStack( spacing: 8) {
                 
@@ -218,9 +212,8 @@ for item in viewModel.selectedCover {
     if let data = try? await item.loadTransferable(type: Data.self) {
         viewModel.selectedCoverDataList.append(data)
     }
+ }
 }
-}
-
         .sheet(item: $viewModel.actionSheetPresentation){ item in
             
             switch item {
@@ -236,13 +229,12 @@ for item in viewModel.selectedCover {
                 Text("showAlert")
             case .showTags:
                 AddTagsView(selectedTags: $viewModel.selectedTags)
-
                     .presentationDetents([.fraction(0.5), .medium, .large])
-                    .environmentObject(viewModel)            case .showTextEditor:
+                    .environmentObject(viewModel)
+            case .showTextEditor:
                 FontView()
                     .environmentObject(viewModel)
                     .presentationDetents([.fraction(0.5), .medium, .large])
-                
             case .showKindOfList:
                 KindOfListView(selectedList: $isNumberedList)
                     .environmentObject(viewModel)

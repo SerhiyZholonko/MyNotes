@@ -35,7 +35,6 @@ struct AddTagsView: View {
                             ForEach(tags) { tag in
                                 TagCell(tag: tag, selectedTags: $selectedTags)
                                     .frame(width: 150, alignment: .leading)
-//                                    .padding(.horizontal, 4)
                             }
                         }
                         .padding()

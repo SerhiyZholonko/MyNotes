@@ -15,8 +15,6 @@ struct AddEditFontView: View {
     @EnvironmentObject var viewModel: AddNoteListViewModel
     @Environment (\.dismiss) private var dismiss
     let columns = Array(repeating: GridItem(.adaptive(minimum: 100), spacing: 16), count: 3) // Four columns with flexible width
-
-
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -56,12 +54,9 @@ struct AddEditFontView: View {
                                     print(size.fontValue)
                                     viewModel.selectedFontSize = size
                                 }
-                            
                         }
                         Spacer()
                     }
-                    //                Text("Select a font style")
-                    //                    .padding(.vertical)
                     Divider()
                         .frame( height: 2)
                         .background(.gray)
@@ -83,19 +78,13 @@ struct AddEditFontView: View {
                                 }
                             }
                         }
-                        
                         Spacer()
                     }
-
-                
-                
                 Spacer()
             }
         }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
-            
-//                .background(Color.gray)
                 .toolbar {
                     Button {
                         dismiss()
@@ -105,12 +94,9 @@ struct AddEditFontView: View {
                             .tint(Color.gray)
                         
                     }
-
                 }
                 .navigationTitle("Font")
                 .navigationBarTitleDisplayMode(.inline)
         }
-        
-        
     }
 }

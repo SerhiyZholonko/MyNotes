@@ -293,15 +293,25 @@ class NoteViewModel: ObservableObject {
     }
 
     // Save or update the note
-    func saveOrUpdateNote(in context: ModelContext, dismiss: @escaping () -> Void) {
-        guard let titleData = title.toData() else {
-            print("Failed to serialize attributed text.")
-            return
-        }
-        guard let noteTextData = noteText.toData() else {
-            print("Failed to serialize attributed text.")
-            return
-        }
+    func saveOrUpdateNote(in context: ModelContext, complition: @escaping (Result<Void, Error>) -> Void) {
+        guard
+              let titleData = title.toData(),
+              let noteTextData = noteText.toData(),
+              title.string != "" || noteText.string != ""
+          else {
+              // Optionally show user feedback about empty note
+            print("Title or body text is empty.")
+            complition(.failure(NSError(domain: "NoteError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Title or note text is empty."])))
+              return
+          }
+//        guard let titleData = title.toData() else {
+//            print("Failed to serialize attributed text.")
+//            return
+//        }
+//        guard let noteTextData = noteText.toData() else {
+//            print("Failed to serialize attributed text.")
+//            return
+//        }
         let richTitleEntity = RichTextEntity(attributedTextData: titleData)
         context.insert(richTitleEntity)
 
@@ -333,7 +343,8 @@ class NoteViewModel: ObservableObject {
         // Save context
         do {
             try context.save()
-            dismiss()
+            selectedCover = []
+            complition(.success(()))
         } catch {
             print("Failed to save note: \(error.localizedDescription)")
         }
